@@ -1,7 +1,7 @@
 # Golang Fullstack Desert Collections
 
-The plan is the build this application with 3 stacks. I want to take the app from start to finish in each.
-The issue has been that every time I star this project, I only get part way and so this three fold build is important to me.
+The plan is to build this application with 3 stacks, 1 in Go, 1 in Next(Server Actions), 1 in Sveltkit(maybe lol). I want to take the app from start to finish in each.
+The issue has been that every time I start this project, I only get part way and so this three fold build is important to me.
 
 > ## The Goal
 >
