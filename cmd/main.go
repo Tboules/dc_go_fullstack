@@ -1,15 +1,19 @@
 package main
 
 import (
-	"fmt"
+	"log"
 
-	"github.com/Tboules/dc_go_fullstack/internal/routes"
+	"github.com/Tboules/dc_go_fullstack/internal/server"
+	"github.com/joho/godotenv"
 )
 
 func main() {
-	fmt.Println("Hello World")
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
 
-	router := routes.AppRouter()
+	server := server.NewServer()
 
-	router.Logger.Fatal(router.Start(":8000"))
+	log.Fatal(server.ListenAndServe())
 }
