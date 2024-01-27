@@ -1,8 +1,8 @@
 package server
 
 import (
-	"net/http"
-
+	"github.com/Tboules/dc_go_fullstack/internal/views"
+	"github.com/a-h/templ"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
@@ -14,15 +14,13 @@ func (s *Server) RegisterRoutes() *echo.Echo {
 	}))
 	e.Use(middleware.Recover())
 
-	e.GET("/", homeHandler)
+	e.GET("/", homeHandler())
 
 	return e
 }
 
-func homeHandler(ctx echo.Context) error {
-	resp := make(map[string]string)
+func homeHandler() echo.HandlerFunc {
+	comp := views.HomePage("Templ HTML Template")
 
-	resp["Message"] = "Hello Air"
-
-	return ctx.JSON(http.StatusOK, resp)
+	return echo.WrapHandler(templ.Handler(comp))
 }

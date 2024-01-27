@@ -3,6 +3,7 @@ module github.com/Tboules/dc_go_fullstack
 go 1.21.4
 
 require (
+	github.com/a-h/templ v0.2.543 // indirect
 	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
 	github.com/joho/godotenv v1.5.1 // indirect
 	github.com/labstack/echo/v4 v4.11.4 // indirect
