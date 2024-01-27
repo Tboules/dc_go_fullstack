@@ -22,7 +22,7 @@ func (s *Server) RegisterRoutes() *echo.Echo {
 func homeHandler(ctx echo.Context) error {
 	resp := make(map[string]string)
 
-	resp["Message"] = "New File Structure"
+	resp["Message"] = "Hello Air"
 
 	return ctx.JSON(http.StatusOK, resp)
 }

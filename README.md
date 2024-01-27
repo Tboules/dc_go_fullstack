@@ -20,3 +20,15 @@ The issue has been that every time I start this project, I only get part way and
 4. [tailwindcss](https://tailwindcss.com/docs/installation)
 5. [Echo](https://echo.labstack.com/docs)
 6. [Goth](https://github.com/markbates/goth)
+7. [PlanetScale](https://planetscale.com/docs/tutorials/planetscale-quick-start-guide)
+8. [MySql](https://dev.mysql.com/doc/refman/8.0/en/programs.html)
+
+### Steps
+
+- [x] Create live server updates during coding
+- [ ] configure templ htmx css
+- [ ] configure goth
+- [ ] configure db
+- [ ] Initialize db schema and migrations
+- [ ] create auth page and persist user data
+- [ ] create front end forms for CRUD quotes and authors
