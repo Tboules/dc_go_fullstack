@@ -1,8 +1,7 @@
 package server
 
 import (
-	"github.com/Tboules/dc_go_fullstack/internal/views"
-	"github.com/a-h/templ"
+	"github.com/Tboules/dc_go_fullstack/internal/server/handlers"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
@@ -16,13 +15,8 @@ func (s *Server) RegisterRoutes() *echo.Echo {
 	}))
 	e.Use(middleware.Recover())
 
-	e.GET("/", homeHandler())
+	e.GET("/", handlers.HomeHandler())
+	e.POST("/", handlers.PostCount)
 
 	return e
-}
-
-func homeHandler() echo.HandlerFunc {
-	comp := views.HomePage("Templ HTML Template")
-
-	return echo.WrapHandler(templ.Handler(comp))
 }

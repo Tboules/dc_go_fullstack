@@ -5,7 +5,10 @@ import "github.com/Tboules/dc_go_fullstack/internal/views/layouts"
 templ HomePage(name string) {
 	@layouts.MainLayout() {
 		<div class="bg-blue-200">
-			Hello, { name }
+			<p>
+				Hello, { name }
+			</p>
+			<button hx-post="/">Count</button>
 		</div>
 	}
 }
