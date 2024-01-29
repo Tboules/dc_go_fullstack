@@ -26,7 +26,7 @@ The issue has been that every time I start this project, I only get part way and
 ### Steps
 
 - [x] Create live server updates during coding
-- [ ] configure ~~templ~~ htmx css
+- [x] configure ~~templ~~ htmx css
 - [ ] configure goth
 - [ ] configure db
 - [ ] Initialize db schema and migrations
