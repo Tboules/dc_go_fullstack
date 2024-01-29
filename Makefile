@@ -14,4 +14,4 @@ build:
 watch:
 	@air
 
-.PHONY: run build watch templates_dev
+.PHONY: run build watch templates_dev templates
