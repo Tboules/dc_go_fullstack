@@ -1,7 +1,11 @@
 package views
 
+import "github.com/Tboules/dc_go_fullstack/internal/views/layouts"
+
 templ HomePage(name string) {
-<div>
-  Hello, { name }
-</div>
+	@layouts.MainLayout() {
+		<div>
+			Hello, { name }
+		</div>
+	}
 }
