@@ -9,6 +9,8 @@ import (
 
 func (s *Server) RegisterRoutes() *echo.Echo {
 	e := echo.New()
+
+	e.Static("/static", "cmd/web")
 	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
 		Format: "method=${method}, uri=${uri}, status=${status}\n",
 	}))
