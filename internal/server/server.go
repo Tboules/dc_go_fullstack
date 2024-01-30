@@ -6,17 +6,21 @@ import (
 	"os"
 	"strconv"
 	"time"
+
+	"github.com/Tboules/dc_go_fullstack/internal/database"
 )
 
 type Server struct {
-	port int
+	port  int
+	store *database.Store
 }
 
 func NewServer() *http.Server {
 	port, _ := strconv.Atoi(os.Getenv("PORT"))
 
 	NewServer := &Server{
-		port: port,
+		port:  port,
+		store: database.New(),
 	}
 
 	server := &http.Server{

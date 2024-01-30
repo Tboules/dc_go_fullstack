@@ -1,6 +1,7 @@
 package views
 
 import "github.com/Tboules/dc_go_fullstack/internal/views/layouts"
+import "strconv"
 
 templ HomePage(name string) {
 	@layouts.MainLayout() {
@@ -8,7 +9,11 @@ templ HomePage(name string) {
 			<p>
 				Hello, { name }
 			</p>
-			<button hx-post="/">Count</button>
+			@CountButton(0)
 		</div>
 	}
+}
+
+templ CountButton(count int) {
+	<button hx-post="/" hx-swap="outerHTML">+{ strconv.Itoa(count) }</button>
 }

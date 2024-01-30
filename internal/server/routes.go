@@ -1,7 +1,6 @@
 package server
 
 import (
-	"github.com/Tboules/dc_go_fullstack/internal/server/handlers"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
@@ -15,8 +14,12 @@ func (s *Server) RegisterRoutes() *echo.Echo {
 	}))
 	e.Use(middleware.Recover())
 
-	e.GET("/", handlers.HomeHandler())
-	e.POST("/", handlers.PostCount)
+	homeRouter(e, s)
 
 	return e
+}
+
+func homeRouter(e *echo.Echo, s *Server) {
+	e.GET("/", s.HomeHandler())
+	e.POST("/", s.PostCount)
 }
