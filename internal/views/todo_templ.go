@@ -31,7 +31,15 @@ func TodoPage() templ.Component {
 				templ_7745c5c3_Buffer = templ.GetBuffer()
 				defer templ.ReleaseBuffer(templ_7745c5c3_Buffer)
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<main class=\"p-4 max-w-screen-lg m-auto\"><h1 class=\"p-4\">Todo Page </h1></main>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<main class=\"p-4 max-w-screen-lg m-auto\"><form class=\"max-w-screen-sm bg-slate-100 rounded p-8 mt-8 mx-4 sm:mx-auto shadow\"><h3 class=\"text-center font-medium text-xl\">Add a Todo</h3><input class=\"w-full block rounded p-4 mt-4 border border-slate-400\" placeholder=\"Title\"> <textarea type=\"\" class=\"w-full block rounded p-4 mt-4 border border-slate-400\" placeholder=\"Description\"></textarea> <button class=\"w-full mt-4 p-4 rounded bg-slate-700 text-white\" type=\"submit\">Create TODO </button></form><section class=\"max-w-screen-sm bg-slate-100 rounded p-8 mt-8 mx-4 sm:mx-auto shadow\"><h3 class=\"text-center font-medium text-xl mb-8\">Todo List</h3><div id=\"todo-list\" class=\"w-full flex flex-col gap-4\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = TodoCard().Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div></section></main>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -41,6 +49,30 @@ func TodoPage() templ.Component {
 			return templ_7745c5c3_Err
 		})
 		templ_7745c5c3_Err = layouts.MainLayout().Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		if !templ_7745c5c3_IsBuffer {
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteTo(templ_7745c5c3_W)
+		}
+		return templ_7745c5c3_Err
+	})
+}
+
+func TodoCard() templ.Component {
+	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
+		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templ_7745c5c3_W.(*bytes.Buffer)
+		if !templ_7745c5c3_IsBuffer {
+			templ_7745c5c3_Buffer = templ.GetBuffer()
+			defer templ.ReleaseBuffer(templ_7745c5c3_Buffer)
+		}
+		ctx = templ.InitializeContext(ctx)
+		templ_7745c5c3_Var3 := templ.GetChildren(ctx)
+		if templ_7745c5c3_Var3 == nil {
+			templ_7745c5c3_Var3 = templ.NopComponent
+		}
+		ctx = templ.ClearChildren(ctx)
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"w-full rounded bg-white shadow p-4\"><h4 class=\"font-light\">Title </h4><p class=\"pt-6 pb-8 font-normal text-lg\">Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat.</p><button class=\"w-full mt-4 p-4 rounded bg-red-700 text-white\">Delete </button></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
