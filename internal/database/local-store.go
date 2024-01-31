@@ -14,3 +14,7 @@ func (s *Store) Increment() int {
 	s.count = s.count + 1
 	return s.count
 }
+
+func (s *Store) CurrentCount() int {
+	return s.count
+}

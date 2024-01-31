@@ -3,13 +3,11 @@ package views
 import "github.com/Tboules/dc_go_fullstack/internal/views/layouts"
 import "strconv"
 
-templ HomePage(name string) {
+templ HomePage(count int) {
 	@layouts.MainLayout() {
 		<div class="bg-blue-200">
-			<p>
-				Hello, { name }
-			</p>
-			@CountButton(0)
+			<h1>Page Load testing </h1>
+			@CountButton(count)
 		</div>
 	}
 }

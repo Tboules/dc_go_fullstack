@@ -21,7 +21,7 @@ func (s *Server) RegisterRoutes() *echo.Echo {
 }
 
 func (s *Server) homeRouter(e *echo.Echo) {
-	e.GET("/", s.HomeHandler())
+	e.GET("/", s.HomeHandler)
 	e.POST("/", s.PostCount)
 }
 
