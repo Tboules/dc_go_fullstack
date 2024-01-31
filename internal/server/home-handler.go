@@ -13,7 +13,9 @@ func (s *Server) HomeHandler() echo.HandlerFunc {
 }
 
 func (s *Server) PostCount(c echo.Context) error {
-	comp := views.CountButton(s.store.Increment())
+	count := s.store.Increment()
+
+	comp := views.CountButton(count)
 
 	return comp.Render(c.Request().Context(), c.Response().Writer)
 }

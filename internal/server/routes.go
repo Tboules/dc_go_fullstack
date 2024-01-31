@@ -14,12 +14,17 @@ func (s *Server) RegisterRoutes() *echo.Echo {
 	}))
 	e.Use(middleware.Recover())
 
-	homeRouter(e, s)
+	s.homeRouter(e)
+	s.todoRouter(e)
 
 	return e
 }
 
-func homeRouter(e *echo.Echo, s *Server) {
+func (s *Server) homeRouter(e *echo.Echo) {
 	e.GET("/", s.HomeHandler())
 	e.POST("/", s.PostCount)
+}
+
+func (s *Server) todoRouter(e *echo.Echo) {
+	e.GET("/todo", s.TodoPageHandler())
 }
