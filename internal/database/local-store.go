@@ -1,5 +1,9 @@
 package database
 
+import (
+	"math/rand"
+)
+
 type Todo struct {
 	Title       string
 	Description string
@@ -41,4 +45,21 @@ func (s *Store) Increment() int {
 
 func (s *Store) CurrentCount() int {
 	return s.count
+}
+
+func (s *Store) GetTodos() []Todo {
+	return s.todos
+}
+
+func (s *Store) AddTodo(t Todo) []Todo {
+	id := rand.Intn(10000001)
+
+	s.todos = append(s.todos, Todo{
+		ID:          id,
+		Title:       t.Title,
+		Description: t.Title,
+		Completed:   t.Completed,
+	})
+
+	return s.todos
 }

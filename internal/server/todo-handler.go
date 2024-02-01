@@ -7,7 +7,7 @@ import (
 )
 
 func (s *Server) TodoPageHandler() echo.HandlerFunc {
-	page := views.TodoPage()
+	page := views.TodoPage(s.store.GetTodos())
 
 	return echo.WrapHandler(templ.Handler(page))
 }

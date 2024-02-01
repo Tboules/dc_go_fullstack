@@ -1,33 +1,39 @@
 package views
 
 import "github.com/Tboules/dc_go_fullstack/internal/views/layouts"
+import "github.com/Tboules/dc_go_fullstack/internal/database"
 
-templ TodoPage() {
-@layouts.MainLayout() {
-<main class="p-4 max-w-screen-lg m-auto">
-  <form class="max-w-screen-sm bg-slate-100 rounded p-8 mt-8 mx-4 sm:mx-auto shadow">
-    <h3 class="text-center font-medium text-xl">Add a Todo</h3>
-    <input class="w-full block rounded p-4 mt-4 border border-slate-400" placeholder="Title" />
-    <textarea type="" class="w-full block rounded p-4 mt-4 border border-slate-400"
-      placeholder="Description"></textarea>
-    <button class="w-full mt-4 p-4 rounded bg-slate-700 text-white" type="submit">Create TODO </button>
-  </form>
-  <section class="max-w-screen-sm bg-slate-100 rounded p-8 mt-8 mx-4 sm:mx-auto shadow">
-    <h3 class="text-center font-medium text-xl mb-8">Todo List</h3>
-    <div id="todo-list" class="w-full flex flex-col gap-4">
-      @TodoCard()
-    </div>
-  </section>
-</main>
-}
+templ TodoPage(todos []database.Todo) {
+	@layouts.MainLayout() {
+		<main class="p-4 max-w-screen-lg m-auto">
+			<form class="max-w-screen-sm bg-slate-100 rounded p-8 mt-8 mx-4 sm:mx-auto shadow">
+				<h3 class="text-center font-medium text-xl">Add a Todo</h3>
+				<input class="w-full block rounded p-4 mt-4 border border-slate-400" placeholder="Title"/>
+				<textarea
+					type=""
+					class="w-full block rounded p-4 mt-4 border border-slate-400"
+					placeholder="Description"
+				></textarea>
+				<button class="w-full mt-4 p-4 rounded bg-slate-700 text-white" type="submit">Create TODO </button>
+			</form>
+			<section class="max-w-screen-sm bg-slate-100 rounded p-8 mt-8 mx-4 sm:mx-auto shadow">
+				<h3 class="text-center font-medium text-xl mb-8">Todo List</h3>
+				<div id="todo-list" class="w-full flex flex-col gap-4">
+					@TodoCard(todos)
+				</div>
+			</section>
+		</main>
+	}
 }
 
-templ TodoCard() {
-<div class="w-full rounded bg-white shadow p-4">
-  <h4 class="font-light">Title </h4>
-  <p class="pt-6 pb-8 font-normal text-lg">
-    Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat.
-  </p>
-  <button class="w-full mt-4 p-4 rounded bg-red-700 text-white">Delete </button>
-</div>
+templ TodoCard(todos []database.Todo) {
+	for _, t := range todos {
+		<div class="w-full rounded bg-white shadow p-4">
+			<h4 class="font-light">{ t.Title } </h4>
+			<p class="pt-6 pb-8 font-normal text-lg">
+				{ t.Description }
+			</p>
+			<button class="w-full mt-4 p-4 rounded bg-red-700 text-white">Delete </button>
+		</div>
+	}
 }
