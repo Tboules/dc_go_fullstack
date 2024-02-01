@@ -589,18 +589,6 @@ video {
   display: contents;
 }
 
-.h-4 {
-  height: 1rem;
-}
-
-.h-9 {
-  height: 2.25rem;
-}
-
-.h-\[B\FFFD\644\FFFD\2L\11\FFFD\17 B\] {
-  height: B�ل�L�B;
-}
-
 .w-full {
   width: 100%;
 }
@@ -695,10 +683,6 @@ video {
   padding-top: 1.5rem;
 }
 
-.pb-9 {
-  padding-bottom: 2.25rem;
-}
-
 .text-center {
   text-align: center;
 }
@@ -736,28 +720,12 @@ video {
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
-.\[e\:\FFFD\FFFD 9XD\FFFD\FFFD\$q-\FFFD\3\FFFD\FFFD\14\FFFD\] {
-  e: ��9XD��$q-����;
-}
-
-.\[-\:\FFFDJ\/en\FFFDj\FFFD 4\FFFD\63D\562\17\FFFD\FFFD\FFFD\1C\FFFD\17S\FFFD\FFFD\FFFDm\/\FFFD\FFFD\1B\FFFD-U\FFFD\7F\FFFD\19 2\FFFD\FFFD\FFFD\FFFDi\B56A\FFFD\FFFD\FFFDm\E2B\FFFD\FFFD\FFFDz\FFFD\+\FFFD\3EF\] {
-  -: �J/en�j�4�ؽբ����S���m/���-U��2����i땪���mห���z�+�ϯ;
-}
-
-.\[f\:RcA\FFFD\#\] {
-  f: RcA�#;
-}
-
-.\[nGb\:k\] {
-  n-gb: k;
-}
-
-.\[o\:J\.\FFFD\FFFDL\FFFD\FFFD\] {
-  o: J.��L��;
-}
-
 .\[gy\:\FFFD\FFFD\\\FFFDt\2\FFFD\FFFDi\FFFD\] {
   gy: ��\�t��i�;
+}
+
+.\[n\:\FFFD\FFFD\1F\] {
+  n: ��;
 }
 
 @media (min-width: 640px) {

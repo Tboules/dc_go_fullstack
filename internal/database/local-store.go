@@ -49,7 +49,6 @@ func (s *Store) CurrentCount() int {
 }
 
 func (s *Store) GetTodos() []Todo {
-	fmt.Println(s.todos)
 	return s.todos
 }
 

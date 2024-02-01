@@ -7,11 +7,11 @@ import "strconv"
 templ TodoPage(todos []database.Todo) {
 	@layouts.MainLayout() {
 		<main class="p-4 max-w-screen-lg m-auto">
-			<form class="max-w-screen-sm bg-slate-100 rounded p-8 mt-8 mx-4 sm:mx-auto shadow">
+			<form hx-post="/todo" class="max-w-screen-sm bg-slate-100 rounded p-8 mt-8 mx-4 sm:mx-auto shadow">
 				<h3 class="text-center font-medium text-xl">Add a Todo</h3>
-				<input class="w-full block rounded p-4 mt-4 border border-slate-400" placeholder="Title"/>
+				<input name="title" class="w-full block rounded p-4 mt-4 border border-slate-400" placeholder="Title"/>
 				<textarea
-					type=""
+					name="description"
 					class="w-full block rounded p-4 mt-4 border border-slate-400"
 					placeholder="Description"
 				></textarea>
