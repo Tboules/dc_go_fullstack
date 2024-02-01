@@ -1,6 +1,7 @@
 package database
 
 import (
+	"fmt"
 	"math/rand"
 )
 
@@ -48,6 +49,7 @@ func (s *Store) CurrentCount() int {
 }
 
 func (s *Store) GetTodos() []Todo {
+	fmt.Println(s.todos)
 	return s.todos
 }
 
@@ -61,5 +63,22 @@ func (s *Store) AddTodo(t Todo) []Todo {
 		Completed:   t.Completed,
 	})
 
+	return s.todos
+}
+
+func (s *Store) DeleteTodo(ID int) []Todo {
+	indexToDelete := -1
+
+	for i, todo := range s.todos {
+		if todo.ID == ID {
+			indexToDelete = i
+		}
+	}
+
+	if indexToDelete != -1 {
+		s.todos = append(s.todos[:indexToDelete], s.todos[indexToDelete+1:]...)
+	}
+
+	fmt.Println(s.todos)
 	return s.todos
 }

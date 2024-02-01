@@ -26,5 +26,6 @@ func (s *Server) homeRouter(e *echo.Echo) {
 }
 
 func (s *Server) todoRouter(e *echo.Echo) {
-	e.GET("/todo", s.TodoPageHandler())
+	e.GET("/todo", s.TodoPageHandler)
+	e.DELETE("/todo/:id", s.DeleteTodoHandler)
 }

@@ -2,6 +2,7 @@ package views
 
 import "github.com/Tboules/dc_go_fullstack/internal/views/layouts"
 import "github.com/Tboules/dc_go_fullstack/internal/database"
+import "strconv"
 
 templ TodoPage(todos []database.Todo) {
 	@layouts.MainLayout() {
@@ -33,7 +34,13 @@ templ TodoCard(todos []database.Todo) {
 			<p class="pt-6 pb-8 font-normal text-lg">
 				{ t.Description }
 			</p>
-			<button class="w-full mt-4 p-4 rounded bg-red-700 text-white">Delete </button>
+			<button
+				hx-target="#todo-list"
+				hx-delete={ "/todo/" + strconv.Itoa(t.ID) }
+				class="w-full mt-4 p-4 rounded bg-red-700 text-white"
+			>
+				Delete
+			</button>
 		</div>
 	}
 }
