@@ -1,7 +1,6 @@
 package database
 
 import (
-	"fmt"
 	"math/rand"
 )
 
@@ -65,7 +64,7 @@ func (s *Store) AddTodo(t Todo) []Todo {
 	return s.todos
 }
 
-func (s *Store) DeleteTodo(ID int) []Todo {
+func (s *Store) DeleteTodo(ID int) int {
 	indexToDelete := -1
 
 	for i, todo := range s.todos {
@@ -78,6 +77,5 @@ func (s *Store) DeleteTodo(ID int) []Todo {
 		s.todos = append(s.todos[:indexToDelete], s.todos[indexToDelete+1:]...)
 	}
 
-	fmt.Println(s.todos)
-	return s.todos
+	return indexToDelete
 }

@@ -24,11 +24,13 @@ func (s *Server) DeleteTodoHandler(c echo.Context) error {
 		return errors.New("No ID was provided")
 	}
 
-	todos := s.store.DeleteTodo(id)
+	deletedIndex := s.store.DeleteTodo(id)
 
-	comp := views.TodoCard(todos)
+	if deletedIndex == -1 {
+		return c.String(http.StatusNotFound, "A todo at that id does not exist")
+	}
 
-	return comp.Render(c.Request().Context(), c.Response().Writer)
+	return c.NoContent(http.StatusOK)
 }
 
 func (s *Server) PostTodoHandler(c echo.Context) error {

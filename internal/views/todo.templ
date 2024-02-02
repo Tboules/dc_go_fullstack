@@ -29,15 +29,16 @@ templ TodoPage(todos []database.Todo) {
 
 templ TodoCard(todos []database.Todo) {
 	for _, t := range todos {
-		<div class="w-full rounded bg-white shadow p-4">
+		<div id={ "todo-id-" + strconv.Itoa(t.ID) } class="w-full rounded bg-white shadow p-4">
 			<h4 class="font-light">{ t.Title } </h4>
 			<p class="pt-6 pb-8 font-normal text-lg">
 				{ t.Description }
 			</p>
 			<button
-				hx-target="#todo-list"
+				hx-target={ "#todo-id-" + strconv.Itoa(t.ID) }
 				hx-delete={ "/todo/" + strconv.Itoa(t.ID) }
 				class="w-full mt-4 p-4 rounded bg-red-700 text-white"
+				hx-swap="outerHTML"
 			>
 				Delete
 			</button>
