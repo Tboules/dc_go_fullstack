@@ -720,6 +720,10 @@ video {
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
+.\[u_\:\FFFD\FFFD\FFFD 1\] {
+  u_: ���1;
+}
+
 @media (min-width: 640px) {
   .sm\:mx-auto {
     margin-left: auto;

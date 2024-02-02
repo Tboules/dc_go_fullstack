@@ -7,7 +7,12 @@ import "strconv"
 templ TodoPage(todos []database.Todo) {
 	@layouts.MainLayout() {
 		<main class="p-4 max-w-screen-lg m-auto">
-			<form hx-post="/todo" class="max-w-screen-sm bg-slate-100 rounded p-8 mt-8 mx-4 sm:mx-auto shadow">
+			<form
+				hx-post="/todo"
+				hx-target="#todo-list"
+				hx-on::after-request="this.reset()"
+				class="max-w-screen-sm bg-slate-100 rounded p-8 mt-8 mx-4 sm:mx-auto shadow"
+			>
 				<h3 class="text-center font-medium text-xl">Add a Todo</h3>
 				<input name="title" class="w-full block rounded p-4 mt-4 border border-slate-400" placeholder="Title"/>
 				<textarea
@@ -28,15 +33,15 @@ templ TodoPage(todos []database.Todo) {
 }
 
 templ TodoCard(todos []database.Todo) {
-	for _, t := range todos {
-		<div id={ "todo-id-" + strconv.Itoa(t.ID) } class="w-full rounded bg-white shadow p-4">
-			<h4 class="font-light">{ t.Title } </h4>
+	for i := len(todos) - 1; i>= 0; i-- {
+		<div id={ "todo-id-" + strconv.Itoa(todos[i].ID) } class="w-full rounded bg-white shadow p-4">
+			<h4 class="font-light">{ todos[i].Title } </h4>
 			<p class="pt-6 pb-8 font-normal text-lg">
-				{ t.Description }
+				{ todos[i].Description }
 			</p>
 			<button
-				hx-target={ "#todo-id-" + strconv.Itoa(t.ID) }
-				hx-delete={ "/todo/" + strconv.Itoa(t.ID) }
+				hx-target={ "#todo-id-" + strconv.Itoa(todos[i].ID) }
+				hx-delete={ "/todo/" + strconv.Itoa(todos[i].ID) }
 				class="w-full mt-4 p-4 rounded bg-red-700 text-white"
 				hx-swap="outerHTML"
 			>

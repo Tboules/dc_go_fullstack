@@ -54,12 +54,9 @@ func (s *Store) GetTodos() []Todo {
 func (s *Store) AddTodo(t Todo) []Todo {
 	id := rand.Intn(10000001)
 
-	s.todos = append(s.todos, Todo{
-		ID:          id,
-		Title:       t.Title,
-		Description: t.Title,
-		Completed:   t.Completed,
-	})
+	t.ID = id
+
+	s.todos = append(s.todos, t)
 
 	return s.todos
 }

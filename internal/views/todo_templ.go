@@ -33,7 +33,7 @@ func TodoPage(todos []database.Todo) templ.Component {
 				templ_7745c5c3_Buffer = templ.GetBuffer()
 				defer templ.ReleaseBuffer(templ_7745c5c3_Buffer)
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<main class=\"p-4 max-w-screen-lg m-auto\"><form hx-post=\"/todo\" class=\"max-w-screen-sm bg-slate-100 rounded p-8 mt-8 mx-4 sm:mx-auto shadow\"><h3 class=\"text-center font-medium text-xl\">Add a Todo</h3><input name=\"title\" class=\"w-full block rounded p-4 mt-4 border border-slate-400\" placeholder=\"Title\"> <textarea name=\"description\" class=\"w-full block rounded p-4 mt-4 border border-slate-400\" placeholder=\"Description\"></textarea> <button class=\"w-full mt-4 p-4 rounded bg-slate-700 text-white\" type=\"submit\">Create TODO </button></form><section class=\"max-w-screen-sm bg-slate-100 rounded p-8 mt-8 mx-4 sm:mx-auto shadow\"><h3 class=\"text-center font-medium text-xl mb-8\">Todo List</h3><div id=\"todo-list\" class=\"w-full flex flex-col gap-4\">")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<main class=\"p-4 max-w-screen-lg m-auto\"><form hx-post=\"/todo\" hx-target=\"#todo-list\" hx-on::after-request=\"this.reset()\" class=\"max-w-screen-sm bg-slate-100 rounded p-8 mt-8 mx-4 sm:mx-auto shadow\"><h3 class=\"text-center font-medium text-xl\">Add a Todo</h3><input name=\"title\" class=\"w-full block rounded p-4 mt-4 border border-slate-400\" placeholder=\"Title\"> <textarea name=\"description\" class=\"w-full block rounded p-4 mt-4 border border-slate-400\" placeholder=\"Description\"></textarea> <button class=\"w-full mt-4 p-4 rounded bg-slate-700 text-white\" type=\"submit\">Create TODO </button></form><section class=\"max-w-screen-sm bg-slate-100 rounded p-8 mt-8 mx-4 sm:mx-auto shadow\"><h3 class=\"text-center font-medium text-xl mb-8\">Todo List</h3><div id=\"todo-list\" class=\"w-full flex flex-col gap-4\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -74,12 +74,12 @@ func TodoCard(todos []database.Todo) templ.Component {
 			templ_7745c5c3_Var3 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		for _, t := range todos {
+		for i := len(todos) - 1; i >= 0; i-- {
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div id=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString("todo-id-" + strconv.Itoa(t.ID)))
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString("todo-id-" + strconv.Itoa(todos[i].ID)))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -88,9 +88,9 @@ func TodoCard(todos []database.Todo) templ.Component {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var4 string
-			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(t.Title)
+			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(todos[i].Title)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/views/todo.templ`, Line: 32, Col: 35}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/views/todo.templ`, Line: 37, Col: 42}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {
@@ -101,9 +101,9 @@ func TodoCard(todos []database.Todo) templ.Component {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var5 string
-			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(t.Description)
+			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(todos[i].Description)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/views/todo.templ`, Line: 34, Col: 19}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/views/todo.templ`, Line: 39, Col: 26}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 			if templ_7745c5c3_Err != nil {
@@ -113,7 +113,7 @@ func TodoCard(todos []database.Todo) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString("#todo-id-" + strconv.Itoa(t.ID)))
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString("#todo-id-" + strconv.Itoa(todos[i].ID)))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -121,7 +121,7 @@ func TodoCard(todos []database.Todo) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString("/todo/" + strconv.Itoa(t.ID)))
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString("/todo/" + strconv.Itoa(todos[i].ID)))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
