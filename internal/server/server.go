@@ -7,12 +7,14 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/Tboules/dc_go_fullstack/internal/auth"
 	"github.com/Tboules/dc_go_fullstack/internal/database"
 )
 
 type Server struct {
 	port  int
 	store *database.Store
+	auth  *auth.Auth
 }
 
 func NewServer() *http.Server {
@@ -21,6 +23,7 @@ func NewServer() *http.Server {
 	NewServer := &Server{
 		port:  port,
 		store: database.New(),
+		auth:  auth.InitAuth(),
 	}
 
 	server := &http.Server{
