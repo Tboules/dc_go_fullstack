@@ -556,6 +556,14 @@ video {
   margin: auto;
 }
 
+.m-1 {
+  margin: 0.25rem;
+}
+
+.m-7 {
+  margin: 1.75rem;
+}
+
 .mx-4 {
   margin-left: 1rem;
   margin-right: 1rem;
@@ -722,6 +730,14 @@ video {
 
 .\[u_\:\FFFD\FFFD\FFFD 1\] {
   u_: ���1;
+}
+
+.\[p\:\FFFDh\FFFD\1C\FFFD\FFFD\] {
+  p: �h���;
+}
+
+.\[i\:\'\<\FFFD\FFFD\13\/\'LH\6FA\FFFD\FFFD\FFFD\#\FFFDg\FFFD\745\18C\FFFD\FFFD\] {
+  i: '<��/'LHۺ���#�g�݅ƌ��;
 }
 
 @media (min-width: 640px) {
