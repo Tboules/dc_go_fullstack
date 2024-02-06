@@ -3,7 +3,10 @@ package server
 import (
 	"fmt"
 	"net/http"
+	"time"
 
+	"github.com/Tboules/dc_go_fullstack/internal/auth"
+	"github.com/golang-jwt/jwt"
 	"github.com/labstack/echo/v4"
 )
 
@@ -15,7 +18,37 @@ func (s *Server) AuthProviderCallbackHandler(c echo.Context) error {
 		return err
 	}
 
-	fmt.Println(user)
+	userClaims := auth.UserClaims{
+		ProviderId: user.UserID,
+		StandardClaims: jwt.StandardClaims{
+			IssuedAt:  time.Now().Unix(),
+			ExpiresAt: time.Now().Add(time.Minute * 15).Unix(),
+		},
+	}
+
+	accessToken, err := s.auth.NewAccessToken(userClaims)
+	if err != nil {
+		return err
+	}
+
+	refreshToken, err := s.auth.NewRefreshToken()
+	if err != nil {
+		return err
+	}
+
+	accessCookie := new(http.Cookie)
+	accessCookie.Name = "access_token"
+	accessCookie.Value = accessToken
+	accessCookie.HttpOnly = true
+
+	c.SetCookie(accessCookie)
+
+	refreshCookie := new(http.Cookie)
+	refreshCookie.Name = "refresh_token"
+	refreshCookie.Value = refreshToken
+	refreshCookie.HttpOnly = true
+
+	c.SetCookie(refreshCookie)
 
 	return c.Redirect(http.StatusTemporaryRedirect, "/")
 }
