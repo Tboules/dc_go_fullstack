@@ -19,9 +19,6 @@ const (
 )
 
 func InitAuth() *Auth {
-	goth.UseProviders(
-		google.New(os.Getenv("GOOGLE_CLIENT_ID"), os.Getenv("GOOGLE_SECRET"), "http://localhost:8080/auth/google/callback"),
-	)
 
 	key := []byte(os.Getenv("AUTH_SESSION_SECRET"))
 
@@ -33,6 +30,10 @@ func InitAuth() *Auth {
 	store.Options.Secure = IsProd
 
 	gothic.Store = store
+
+	goth.UseProviders(
+		google.New(os.Getenv("GOOGLE_CLIENT_ID"), os.Getenv("GOOGLE_SECRET"), "http://localhost:8080/auth/google/callback"),
+	)
 
 	return &Auth{
 		Store: store,
