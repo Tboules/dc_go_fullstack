@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"fmt"
 	"os"
 	"time"
 
@@ -31,13 +32,24 @@ func (a *Auth) NewRefreshToken() (string, error) {
 
 func (a *Auth) ParseAccessToken(token string) (*UserClaims, error) {
 	parsedAccessToken, err := jwt.ParseWithClaims(token, &UserClaims{}, func(t *jwt.Token) (interface{}, error) {
+		if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
+			return &UserClaims{}, fmt.Errorf("there was something wrong with the token")
+		}
+
 		return []byte(os.Getenv("JWT_SIGNING_SECRET")), nil
 	})
+	fmt.Printf("world\n")
+
 	if err != nil {
-		return nil, err
+		fmt.Println(err)
+		return &UserClaims{}, err
 	}
 
-	return parsedAccessToken.Claims.(*UserClaims), nil
+	if claims, ok := parsedAccessToken.Claims.(*UserClaims); ok && parsedAccessToken.Valid {
+		return claims, nil
+	} else {
+		return &UserClaims{}, fmt.Errorf("Invalid Token")
+	}
 }
 
 func (a *Auth) ParseRefreshToken(token string) (*jwt.StandardClaims, error) {

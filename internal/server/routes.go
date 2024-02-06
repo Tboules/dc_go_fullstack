@@ -1,6 +1,10 @@
 package server
 
 import (
+	"fmt"
+	"net/http"
+
+	"github.com/Tboules/dc_go_fullstack/internal/constants"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
@@ -9,6 +13,7 @@ func (s *Server) RegisterRoutes() *echo.Echo {
 	e := echo.New()
 
 	e.Static("/static", "cmd/web")
+	e.Pre(middleware.RemoveTrailingSlash())
 	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
 		Format: "method=${method}, uri=${uri}, status=${status}\n",
 	}))
@@ -16,20 +21,17 @@ func (s *Server) RegisterRoutes() *echo.Echo {
 
 	s.authRouter(e)
 	s.homeRouter(e)
+
 	s.todoRouter(e)
 
 	return e
 }
 
+// open routes
+
 func (s *Server) homeRouter(e *echo.Echo) {
 	e.GET("/", s.HomeHandler)
 	e.POST("/", s.PostCount)
-}
-
-func (s *Server) todoRouter(e *echo.Echo) {
-	e.GET("/todo", s.TodoPageHandler)
-	e.DELETE("/todo/:id", s.DeleteTodoHandler)
-	e.POST("/todo", s.PostTodoHandler)
 }
 
 func (s *Server) authRouter(e *echo.Echo) {
@@ -37,4 +39,36 @@ func (s *Server) authRouter(e *echo.Echo) {
 	e.GET("/auth/:provider", s.AuthHandler)
 
 	e.GET("/auth/logout", s.LogoutHandler)
+}
+
+// secure routes
+
+func (s *Server) todoRouter(e *echo.Echo) {
+	todoGroup := e.Group("/todo", s.secureRoutesMiddleware)
+
+	todoGroup.GET("", s.TodoPageHandler)
+	todoGroup.POST("", s.PostTodoHandler)
+
+	todoGroup.DELETE("/:id", s.DeleteTodoHandler)
+}
+
+// middleware
+func (s *Server) secureRoutesMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		accessToken, err := c.Cookie(constants.AccessToken)
+		if err != nil {
+			fmt.Println(err)
+			return echo.NewHTTPError(http.StatusUnauthorized, "No access token found in cookies")
+		}
+
+		claims, err := s.auth.ParseAccessToken(accessToken.Value)
+
+		if err != nil || claims.Valid() != nil {
+			return echo.NewHTTPError(http.StatusUnauthorized, "invalid access token")
+		}
+
+		fmt.Println(claims.Valid())
+
+		return next(c)
+	}
 }

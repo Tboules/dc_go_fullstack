@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/Tboules/dc_go_fullstack/internal/auth"
+	"github.com/Tboules/dc_go_fullstack/internal/constants"
 	"github.com/golang-jwt/jwt"
 	"github.com/labstack/echo/v4"
 )
@@ -37,16 +38,20 @@ func (s *Server) AuthProviderCallbackHandler(c echo.Context) error {
 	}
 
 	accessCookie := new(http.Cookie)
-	accessCookie.Name = "access_token"
+	accessCookie.Name = constants.AccessToken
 	accessCookie.Value = accessToken
 	accessCookie.HttpOnly = true
+	accessCookie.Secure = false
+	accessCookie.Path = "/"
 
 	c.SetCookie(accessCookie)
 
 	refreshCookie := new(http.Cookie)
-	refreshCookie.Name = "refresh_token"
+	refreshCookie.Name = constants.RefreshToken
 	refreshCookie.Value = refreshToken
 	refreshCookie.HttpOnly = true
+	refreshCookie.Secure = false
+	refreshCookie.Path = "/"
 
 	c.SetCookie(refreshCookie)
 
