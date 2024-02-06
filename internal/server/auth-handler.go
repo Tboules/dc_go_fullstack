@@ -17,8 +17,7 @@ func (s *Server) AuthProviderCallbackHandler(c echo.Context) error {
 
 	fmt.Println(user)
 
-	return nil
-	// return c.Redirect(http.StatusTemporaryRedirect, "/")
+	return c.Redirect(http.StatusTemporaryRedirect, "/")
 }
 
 func (s *Server) AuthHandler(c echo.Context) error {
@@ -33,8 +32,7 @@ func (s *Server) AuthHandler(c echo.Context) error {
 			return err
 		}
 
-		return nil
-		// return c.Redirect(http.StatusTemporaryRedirect, "/")
+		return c.Redirect(http.StatusTemporaryRedirect, "/")
 	}
 }
 
