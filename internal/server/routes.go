@@ -11,6 +11,7 @@ import (
 
 func (s *Server) RegisterRoutes() *echo.Echo {
 	e := echo.New()
+	e.HTTPErrorHandler = customErrorHandler
 
 	e.Static("/static", "cmd/web")
 	e.Pre(middleware.RemoveTrailingSlash())
@@ -68,8 +69,24 @@ func (s *Server) secureRoutesMiddleware(next echo.HandlerFunc) echo.HandlerFunc 
 			return echo.NewHTTPError(http.StatusUnauthorized, "invalid access token")
 		}
 
-		fmt.Println(claims.Valid())
-
 		return next(c)
+	}
+}
+
+// global error handler
+func customErrorHandler(err error, c echo.Context) {
+	code := http.StatusInternalServerError
+
+	if he, ok := err.(*echo.HTTPError); ok {
+		code = he.Code
+	}
+	c.Logger().Error(err)
+
+	switch code {
+	case http.StatusUnauthorized:
+		err := c.Redirect(http.StatusTemporaryRedirect, "/login")
+		if err != nil {
+			fmt.Println("Problem with redirect in global error handler")
+		}
 	}
 }
