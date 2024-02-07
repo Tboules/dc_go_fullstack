@@ -35,6 +35,7 @@ func (s *Server) homeRouter(e *echo.Echo) {
 }
 
 func (s *Server) authRouter(e *echo.Echo) {
+	e.GET("/login", s.LoginPageHandler)
 	e.GET("/auth/:provider/callback", s.AuthProviderCallbackHandler)
 	e.GET("/auth/:provider", s.AuthHandler)
 

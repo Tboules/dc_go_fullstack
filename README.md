@@ -29,7 +29,7 @@ The issue has been that every time I start this project, I only get part way and
 - [x] configure ~~templ~~ htmx css
 - [x] configure goth
   - [x] sign in user
-  - [ ] create sign in page
+  - [x] create sign in page
   - [x] create jwt token and set http only cookie
   - [ ] create middleware for error handling, protected route, isAuth
   - [ ] create refresh / session logic in db

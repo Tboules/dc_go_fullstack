@@ -1,0 +1,16 @@
+package views
+
+import "github.com/Tboules/dc_go_fullstack/internal/views/layouts"
+
+templ LoginPage() {
+	@layouts.AuthLayout() {
+		<div class="w-full max-w-md p-8 bg-white rounded shadow border border-slate-100">
+			<h1 class="text-xl font-bold">Desert Collections</h1>
+			<div class="h-[1px] w-11/12 bg-slate-200 m-auto my-4"></div>
+			<h4 class="mt-4 mb-8">Sign in with:</h4>
+			<a href="/auth/google">
+				<button class="border border-slate-200 p-4 rounded w-full font-semibold hover:border-slate-400">Google</button>
+			</a>
+		</div>
+	}
+}

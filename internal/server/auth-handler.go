@@ -7,9 +7,14 @@ import (
 
 	"github.com/Tboules/dc_go_fullstack/internal/auth"
 	"github.com/Tboules/dc_go_fullstack/internal/constants"
+	"github.com/Tboules/dc_go_fullstack/internal/views"
 	"github.com/golang-jwt/jwt"
 	"github.com/labstack/echo/v4"
 )
+
+func (s *Server) LoginPageHandler(c echo.Context) error {
+	return views.LoginPage().Render(c.Request().Context(), c.Response().Writer)
+}
 
 func (s *Server) AuthProviderCallbackHandler(c echo.Context) error {
 	user, err := s.auth.CompleteUserAuth(c)

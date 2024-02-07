@@ -59,7 +59,7 @@ func TopNav() templ.Component {
 			templ_7745c5c3_Var2 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<nav class=\"bg-slate-100 w-full\"><div class=\"flex max-w-screen-xl p-4 m-auto justify-between items-center\"><a href=\"/\">Desert Collections</a><div><a href=\"/todo\">Todo List</a></div><a href=\"/auth/google\">Login</a></div></nav>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<nav class=\"bg-slate-100 w-full\"><div class=\"flex max-w-screen-xl p-4 m-auto justify-between items-center\"><a href=\"/\">Desert Collections</a><div><a href=\"/todo\">Todo List</a></div><a href=\"/login\">Login</a></div></nav>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

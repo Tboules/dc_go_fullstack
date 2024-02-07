@@ -556,17 +556,14 @@ video {
   margin: auto;
 }
 
-.m-1 {
-  margin: 0.25rem;
-}
-
-.m-7 {
-  margin: 1.75rem;
-}
-
 .mx-4 {
   margin-left: 1rem;
   margin-right: 1rem;
+}
+
+.my-4 {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 
 .mb-8 {
@@ -597,8 +594,24 @@ video {
   display: contents;
 }
 
+.h-\[1px\] {
+  height: 1px;
+}
+
+.h-svh {
+  height: 100svh;
+}
+
+.w-11\/12 {
+  width: 91.666667%;
+}
+
 .w-full {
   width: 100%;
+}
+
+.max-w-md {
+  max-width: 28rem;
 }
 
 .max-w-screen-lg {
@@ -629,6 +642,10 @@ video {
   align-items: center;
 }
 
+.justify-center {
+  justify-content: center;
+}
+
 .justify-between {
   justify-content: space-between;
 }
@@ -643,6 +660,16 @@ video {
 
 .border {
   border-width: 1px;
+}
+
+.border-slate-100 {
+  --tw-border-opacity: 1;
+  border-color: rgb(241 245 249 / var(--tw-border-opacity));
+}
+
+.border-slate-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(226 232 240 / var(--tw-border-opacity));
 }
 
 .border-slate-400 {
@@ -663,6 +690,11 @@ video {
 .bg-slate-100 {
   --tw-bg-opacity: 1;
   background-color: rgb(241 245 249 / var(--tw-bg-opacity));
+}
+
+.bg-slate-200 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(226 232 240 / var(--tw-bg-opacity));
 }
 
 .bg-slate-700 {
@@ -705,6 +737,10 @@ video {
   line-height: 1.75rem;
 }
 
+.font-bold {
+  font-weight: 700;
+}
+
 .font-light {
   font-weight: 300;
 }
@@ -715,6 +751,10 @@ video {
 
 .font-normal {
   font-weight: 400;
+}
+
+.font-semibold {
+  font-weight: 600;
 }
 
 .text-white {
@@ -728,16 +768,13 @@ video {
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
-.\[u_\:\FFFD\FFFD\FFFD 1\] {
-  u_: ���1;
+.\[t\:\FFFD\FFFD\FFFDWxe\17\FFFD\FFFD\FFFDX\#\FFFD\12\FFFD\13\FK\6A6\.v\FFFD\FFFD 9\7\FFFD\FFFD\FFFD\15\!\FFFDH\1F\FFFD\5 d\FFFD\1C\=_\FFFDII-\6AFx5NjQ\FFFD\FFFD\FFFD\FFFD\FFFD\FFFD\FFFD\FFFDWY2\1\FFFD\FFFD\1A\/YB\FFFD a\FFFD E\] {
+  t: ���Wxe���X#��Kڦ.v��9���!�H�d�= �II-گx5NjQ��������WY2��/YB�a�E;
 }
 
-.\[p\:\FFFDh\FFFD\1C\FFFD\FFFD\] {
-  p: �h���;
-}
-
-.\[i\:\'\<\FFFD\FFFD\13\/\'LH\6FA\FFFD\FFFD\FFFD\#\FFFDg\FFFD\745\18C\FFFD\FFFD\] {
-  i: '<��/'LHۺ���#�g�݅ƌ��;
+.hover\:border-slate-400:hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(148 163 184 / var(--tw-border-opacity));
 }
 
 @media (min-width: 640px) {
