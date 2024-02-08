@@ -3,12 +3,10 @@ package server
 import (
 	"fmt"
 	"net/http"
-	"time"
 
 	"github.com/Tboules/dc_go_fullstack/internal/auth"
 	"github.com/Tboules/dc_go_fullstack/internal/constants"
 	"github.com/Tboules/dc_go_fullstack/internal/views"
-	"github.com/golang-jwt/jwt"
 	"github.com/labstack/echo/v4"
 )
 
@@ -26,10 +24,6 @@ func (s *Server) AuthProviderCallbackHandler(c echo.Context) error {
 
 	userClaims := auth.UserClaims{
 		ProviderId: user.UserID,
-		StandardClaims: jwt.StandardClaims{
-			IssuedAt:  time.Now().Unix(),
-			ExpiresAt: time.Now().Add(time.Minute * 15).Unix(),
-		},
 	}
 
 	accessToken, err := s.auth.NewAccessToken(userClaims)
@@ -42,23 +36,8 @@ func (s *Server) AuthProviderCallbackHandler(c echo.Context) error {
 		return err
 	}
 
-	accessCookie := new(http.Cookie)
-	accessCookie.Name = constants.AccessToken
-	accessCookie.Value = accessToken
-	accessCookie.HttpOnly = true
-	accessCookie.Secure = false
-	accessCookie.Path = "/"
-
-	c.SetCookie(accessCookie)
-
-	refreshCookie := new(http.Cookie)
-	refreshCookie.Name = constants.RefreshToken
-	refreshCookie.Value = refreshToken
-	refreshCookie.HttpOnly = true
-	refreshCookie.Secure = false
-	refreshCookie.Path = "/"
-
-	c.SetCookie(refreshCookie)
+	s.auth.AddTokenAsHttpOnlyCookie(accessToken, constants.AccessToken, c)
+	s.auth.AddTokenAsHttpOnlyCookie(refreshToken, constants.RefreshToken, c)
 
 	return c.Redirect(http.StatusTemporaryRedirect, "/")
 }

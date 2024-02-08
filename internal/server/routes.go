@@ -57,19 +57,54 @@ func (s *Server) todoRouter(e *echo.Echo) {
 // middleware
 func (s *Server) secureRoutesMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
+
+		// get tokens from cookies
 		accessToken, err := c.Cookie(constants.AccessToken)
 		if err != nil {
 			fmt.Println(err)
 			return echo.NewHTTPError(http.StatusUnauthorized, "No access token found in cookies")
 		}
-
-		claims, err := s.auth.ParseAccessToken(accessToken.Value)
-
-		if err != nil || claims.Valid() != nil {
-			return echo.NewHTTPError(http.StatusUnauthorized, "invalid access token")
+		refreshToken, err := c.Cookie(constants.RefreshToken)
+		if err != nil {
+			return echo.NewHTTPError(http.StatusUnauthorized, "No refresh token found")
 		}
 
-		c.Set(constants.UserClaimsKey, claims)
+		// parse tokens
+		userClaims, ucError := s.auth.ParseAccessToken(accessToken.Value)
+		refreshClaims, rcError := s.auth.ParseRefreshToken(refreshToken.Value)
+
+		// check if token format is messed up
+		if ucError != nil || rcError != nil {
+			return echo.NewHTTPError(http.StatusUnauthorized, "error with token format")
+		}
+
+		// refresh refresh token if expired
+		if refreshClaims.Valid() != nil {
+			// check that old token exists in sessions table
+			// if not redirect user to sign in again
+			//delete old token from db token and/or sessions table
+
+			freshRefresheToken, err := s.auth.NewRefreshToken()
+			if err != nil {
+				return echo.NewHTTPError(http.StatusUnauthorized, "error creating refresh token")
+			}
+
+			s.auth.AddTokenAsHttpOnlyCookie(freshRefresheToken, constants.RefreshToken, c)
+		}
+
+		// refresh access token if refresh token is valid
+		if userClaims.StandardClaims.Valid() != nil && refreshClaims.Valid() == nil {
+			freshAccessToken, err := s.auth.NewAccessToken(*userClaims)
+			if err != nil {
+				return echo.NewHTTPError(http.StatusUnauthorized, "error creating access token")
+			}
+			s.auth.AddTokenAsHttpOnlyCookie(freshAccessToken, constants.AccessToken, c)
+
+			fmt.Printf("old expiration: %v\n", userClaims.StandardClaims.ExpiresAt)
+			fmt.Printf("new token: %s\n", freshAccessToken)
+		}
+
+		c.Set(constants.UserClaimsKey, userClaims)
 		return next(c)
 	}
 }

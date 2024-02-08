@@ -2,10 +2,12 @@ package auth
 
 import (
 	"fmt"
+	"net/http"
 	"os"
 	"time"
 
 	"github.com/golang-jwt/jwt"
+	"github.com/labstack/echo/v4"
 )
 
 type UserClaims struct {
@@ -14,6 +16,11 @@ type UserClaims struct {
 }
 
 func (a *Auth) NewAccessToken(claims UserClaims) (string, error) {
+	claims.StandardClaims = jwt.StandardClaims{
+		IssuedAt:  time.Now().Unix(),
+		ExpiresAt: time.Now().Add(time.Minute * 15).Unix(),
+	}
+
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
 	return token.SignedString([]byte(os.Getenv("JWT_SIGNING_SECRET")))
@@ -72,4 +79,15 @@ func (a *Auth) ParseRefreshToken(token string) (*jwt.StandardClaims, error) {
 	} else {
 		return &jwt.StandardClaims{}, fmt.Errorf("Invalid Refresh Token")
 	}
+}
+
+func (a *Auth) AddTokenAsHttpOnlyCookie(token string, key string, c echo.Context) {
+	accessCookie := new(http.Cookie)
+	accessCookie.Name = key
+	accessCookie.Value = token
+	accessCookie.HttpOnly = true
+	accessCookie.Secure = false
+	accessCookie.Path = "/"
+
+	c.SetCookie(accessCookie)
 }
