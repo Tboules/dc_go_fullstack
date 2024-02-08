@@ -31,7 +31,7 @@ func (s *Server) RegisterRoutes() *echo.Echo {
 // open routes
 
 func (s *Server) homeRouter(e *echo.Echo) {
-	e.GET("/", s.HomeHandler)
+	e.GET("/", s.HomeHandler, s.unrestrictedSetUserClaims)
 	e.POST("/", s.PostCount)
 }
 
@@ -69,6 +69,20 @@ func (s *Server) secureRoutesMiddleware(next echo.HandlerFunc) echo.HandlerFunc 
 			return echo.NewHTTPError(http.StatusUnauthorized, "invalid access token")
 		}
 
+		c.Set(constants.UserClaimsKey, claims)
+		return next(c)
+	}
+}
+
+func (s *Server) unrestrictedSetUserClaims(next echo.HandlerFunc) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		accessToken, _ := c.Cookie(constants.AccessToken)
+
+		claimsFromToken, _ := s.auth.ParseAccessToken(accessToken.Value)
+
+		claims := claimsFromToken
+
+		c.Set(constants.UserClaimsKey, claims)
 		return next(c)
 	}
 }
@@ -80,7 +94,6 @@ func customErrorHandler(err error, c echo.Context) {
 	if he, ok := err.(*echo.HTTPError); ok {
 		code = he.Code
 	}
-	c.Logger().Error(err)
 
 	switch code {
 	case http.StatusUnauthorized:

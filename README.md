@@ -31,7 +31,7 @@ The issue has been that every time I start this project, I only get part way and
   - [x] sign in user
   - [x] create sign in page
   - [x] create jwt token and set http only cookie
-  - [ ] create middleware for error handling, protected route, isAuth
+  - [x] create middleware for error handling, protected route, isAuth
   - [ ] create refresh / session logic in db
 - [ ] configure db
 - [ ] Initialize db schema and migrations

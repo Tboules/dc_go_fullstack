@@ -38,7 +38,6 @@ func (a *Auth) ParseAccessToken(token string) (*UserClaims, error) {
 
 		return []byte(os.Getenv("JWT_SIGNING_SECRET")), nil
 	})
-	fmt.Printf("world\n")
 
 	if err != nil {
 		fmt.Println(err)
@@ -54,12 +53,23 @@ func (a *Auth) ParseAccessToken(token string) (*UserClaims, error) {
 
 func (a *Auth) ParseRefreshToken(token string) (*jwt.StandardClaims, error) {
 	parsedRefreshToken, err := jwt.ParseWithClaims(token, &jwt.StandardClaims{}, func(t *jwt.Token) (interface{}, error) {
+		if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
+			return &jwt.StandardClaims{}, nil
+		}
+
 		return []byte(os.Getenv("JWT_SIGNING_SECRET")), nil
 	})
 
 	if err != nil {
-		return nil, err
+		fmt.Println(err)
+		return &jwt.StandardClaims{}, err
 	}
 
-	return parsedRefreshToken.Claims.(*jwt.StandardClaims), nil
+	claims, ok := parsedRefreshToken.Claims.(*jwt.StandardClaims)
+
+	if ok && parsedRefreshToken.Valid {
+		return claims, nil
+	} else {
+		return &jwt.StandardClaims{}, fmt.Errorf("Invalid Refresh Token")
+	}
 }

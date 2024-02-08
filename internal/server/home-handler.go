@@ -1,11 +1,18 @@
 package server
 
 import (
+	"fmt"
+
+	"github.com/Tboules/dc_go_fullstack/internal/auth"
+	"github.com/Tboules/dc_go_fullstack/internal/constants"
 	"github.com/Tboules/dc_go_fullstack/internal/views"
 	"github.com/labstack/echo/v4"
 )
 
 func (s *Server) HomeHandler(c echo.Context) error {
+	claims, _ := c.Get(constants.UserClaimsKey).(*auth.UserClaims)
+	fmt.Printf("claims: %+v \n", claims)
+
 	comp := views.HomePage(s.store.CurrentCount())
 
 	return comp.Render(c.Request().Context(), c.Response().Writer)
