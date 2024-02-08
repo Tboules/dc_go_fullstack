@@ -39,46 +39,32 @@ func (a *Auth) NewRefreshToken() (string, error) {
 
 func (a *Auth) ParseAccessToken(token string) (*UserClaims, error) {
 	parsedAccessToken, err := jwt.ParseWithClaims(token, &UserClaims{}, func(t *jwt.Token) (interface{}, error) {
-		if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
-			return &UserClaims{}, fmt.Errorf("there was something wrong with the token")
-		}
-
 		return []byte(os.Getenv("JWT_SIGNING_SECRET")), nil
 	})
 
 	if err != nil {
-		fmt.Println(err)
-		return &UserClaims{}, err
+		if err.(*jwt.ValidationError).Errors&jwt.ValidationErrorMalformed != 0 {
+			fmt.Println("Token Malformed")
+			return &UserClaims{}, err
+		}
 	}
 
-	if claims, ok := parsedAccessToken.Claims.(*UserClaims); ok && parsedAccessToken.Valid {
-		return claims, nil
-	} else {
-		return &UserClaims{}, fmt.Errorf("Invalid Token")
-	}
+	return parsedAccessToken.Claims.(*UserClaims), nil
 }
 
 func (a *Auth) ParseRefreshToken(token string) (*jwt.StandardClaims, error) {
 	parsedRefreshToken, err := jwt.ParseWithClaims(token, &jwt.StandardClaims{}, func(t *jwt.Token) (interface{}, error) {
-		if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
-			return &jwt.StandardClaims{}, nil
-		}
-
 		return []byte(os.Getenv("JWT_SIGNING_SECRET")), nil
 	})
 
 	if err != nil {
-		fmt.Println(err)
-		return &jwt.StandardClaims{}, err
+		if err.(*jwt.ValidationError).Errors&jwt.ValidationErrorMalformed != 0 {
+			fmt.Println("Refresh Token Malformed")
+			return &jwt.StandardClaims{}, err
+		}
 	}
 
-	claims, ok := parsedRefreshToken.Claims.(*jwt.StandardClaims)
-
-	if ok && parsedRefreshToken.Valid {
-		return claims, nil
-	} else {
-		return &jwt.StandardClaims{}, fmt.Errorf("Invalid Refresh Token")
-	}
+	return parsedRefreshToken.Claims.(*jwt.StandardClaims), nil
 }
 
 func (a *Auth) AddTokenAsHttpOnlyCookie(token string, key string, c echo.Context) {
