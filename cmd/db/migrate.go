@@ -35,4 +35,5 @@ func main() {
 	if err != nil {
 		log.Fatalf("Problem with up migration: %v", err)
 	}
+	log.Println("Migration completed sucessfully")
 }

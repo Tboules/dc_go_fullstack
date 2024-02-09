@@ -1,6 +1,7 @@
-CREATE TABLE `tag` IF NOT EXISTS (
+CREATE TABLE IF NOT EXISTS `tag` (
   `id` BIGINT AUTO_INCREMENT PRIMARY KEY,
   `name` varchar(255) UNIQUE NOT NULL,
   `date_added` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `created_by` BIGINT NOT NULL
+  `created_by` BIGINT NOT NULL,
+  CONSTRAINT fk_tag_user FOREIGN KEY (`created_by`) REFERENCES `user` (`id`)
 );

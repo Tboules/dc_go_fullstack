@@ -1,4 +1,4 @@
-CREATE TABLE `desert_figure` IF NOT EXISTS (
+CREATE TABLE IF NOT EXISTS `desert_figure` (
   `id` BIGINT AUTO_INCREMENT PRIMARY KEY,
   `full_name` varchar(255) UNIQUE,
   `first_name` varchar(255),
@@ -9,5 +9,5 @@ CREATE TABLE `desert_figure` IF NOT EXISTS (
   `date_added` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `last_updated` timestamp,
   `created_by` BIGINT NOT NULL,
-  `testing_non` varchar(255)
+  CONSTRAINT fk_df_user FOREIGN KEY (`created_by`) REFERENCES `user` (`id`)
 );

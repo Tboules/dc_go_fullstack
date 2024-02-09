@@ -14,8 +14,8 @@ build:
 watch:
 	@air
 
-# migrateup:
-# 	@migrat
+migrate:
+	@go run cmd/db/migrate.go 
 
-.PHONY: migrateup run build watch templates_dev templates
+.PHONY: migrate run build watch templates_dev templates
 
