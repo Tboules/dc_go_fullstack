@@ -20,6 +20,8 @@ CREATE TABLE `desert_figure` (
   CONSTRAINT fk_df_user FOREIGN KEY (`created_by`) REFERENCES `user` (`id`)
 );
 
+-- ALTER TABLE `desert_figure` ADD FOREIGN KEY (`created_by`) REFERENCES `user` (`id`);
+
 CREATE TABLE `excerpt` (
   `id` BIGINT AUTO_INCREMENT PRIMARY KEY,
   `body` varchar(255) NOT NULL,
@@ -30,21 +32,34 @@ CREATE TABLE `excerpt` (
   `desert_figure` BIGINT NOT NULL,
   `date_added` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `last_updated` timestamp,
-  `created_by` BIGINT NOT NULL
+  `created_by` BIGINT NOT NULL,
+  CONSTRAINT fk_excerpt_df FOREIGN KEY (`desert_figure`) REFERENCES `desert_figure` (`id`),
+  CONSTRAINT fk_excerpt_user FOREIGN KEY (`created_by`) REFERENCES `user` (`id`)
 );
+
+-- ALTER TABLE `excerpt` ADD FOREIGN KEY (`desert_figure`) REFERENCES `desert_figure` (`id`);
+-- ALTER TABLE `excerpt` ADD FOREIGN KEY (`created_by`) REFERENCES `user` (`id`);
 
 CREATE TABLE `tag` (
   `id` BIGINT AUTO_INCREMENT PRIMARY KEY,
   `name` varchar(255) UNIQUE NOT NULL,
   `date_added` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `created_by` BIGINT NOT NULL
+  `created_by` BIGINT NOT NULL,
+  CONSTRAINT fk_tag_user FOREIGN KEY (`created_by`) REFERENCES `user` (`id`)
 );
+
+-- ALTER TABLE `tag` ADD FOREIGN KEY (`created_by`) REFERENCES `user` (`id`);
 
 CREATE TABLE `excerpt_tag` (
   `excerpt_id` BIGINT NOT NULL,
   `tag_id` BIGINT NOT NULL,
-  PRIMARY KEY (`excerpt_id`, `tag_id`)
+  PRIMARY KEY (`excerpt_id`, `tag_id`),
+  CONSTRAINT fk_et_excerpt FOREIGN KEY (`excerpt_id`) REFERENCES `excerpt` (`id`),
+  CONSTRAINT fk_et_tag FOREIGN KEY (`tag_id`) REFERENCES `tag` (`id`)
 );
+
+-- ALTER TABLE `excerpt_tag` ADD FOREIGN KEY (`excerpt_id`) REFERENCES `excerpt` (`id`);
+-- ALTER TABLE `excerpt_tag` ADD FOREIGN KEY (`tag_id`) REFERENCES `tag` (`id`);
 
 CREATE TABLE `icon` (
   `id` BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -53,8 +68,13 @@ CREATE TABLE `icon` (
   `created_by` BIGINT NOT NULL,
   `desert_figure` BIGINT NOT NULL,
   `date_added` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `last_updated` timestamp
+  `last_updated` timestamp,
+  CONSTRAINT fk_icon_user FOREIGN KEY (`created_by`) REFERENCES `user` (`id`),
+  CONSTRAINT fk_icon_df FOREIGN KEY (`desert_figure`) REFERENCES `desert_figure` (`id`)
 );
+
+-- ALTER TABLE `icon` ADD FOREIGN KEY (`created_by`) REFERENCES `user` (`id`);
+-- ALTER TABLE `icon` ADD FOREIGN KEY (`desert_figure`) REFERENCES `desert_figure` (`id`);
 
 CREATE INDEX `excerpt_index_0` ON `excerpt` (`created_by`);
 
@@ -64,17 +84,3 @@ CREATE INDEX `excerpt_tag_index_2` ON `excerpt_tag` (`tag_id`);
 
 CREATE INDEX `icon_index_3` ON `icon` (`desert_figure`);
 
-
-ALTER TABLE `excerpt` ADD FOREIGN KEY (`desert_figure`) REFERENCES `desert_figure` (`id`);
-
-ALTER TABLE `excerpt` ADD FOREIGN KEY (`created_by`) REFERENCES `user` (`id`);
-
-ALTER TABLE `tag` ADD FOREIGN KEY (`created_by`) REFERENCES `user` (`id`);
-
-ALTER TABLE `excerpt_tag` ADD FOREIGN KEY (`excerpt_id`) REFERENCES `excerpt` (`id`);
-
-ALTER TABLE `excerpt_tag` ADD FOREIGN KEY (`tag_id`) REFERENCES `tag` (`id`);
-
-ALTER TABLE `icon` ADD FOREIGN KEY (`created_by`) REFERENCES `user` (`id`);
-
-ALTER TABLE `icon` ADD FOREIGN KEY (`desert_figure`) REFERENCES `desert_figure` (`id`);
