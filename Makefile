@@ -14,4 +14,8 @@ build:
 watch:
 	@air
 
-.PHONY: run build watch templates_dev templates
+# migrateup:
+# 	@migrat
+
+.PHONY: migrateup run build watch templates_dev templates
+

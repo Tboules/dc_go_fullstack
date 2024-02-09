@@ -32,7 +32,9 @@ The issue has been that every time I start this project, I only get part way and
   - [x] create sign in page
   - [x] create jwt token and set http only cookie
   - [x] create middleware for error handling, protected route, isAuth
-  - [ ] create refresh / session logic in db
+  - [x] create refresh
+  - [ ] session logic in db
+  - [ ] logout (clear cookies, clear db session)
 - [ ] configure db
 - [ ] Initialize db schema and migrations
 - [ ] create auth page and persist user data
