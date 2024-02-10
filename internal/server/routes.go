@@ -44,7 +44,6 @@ func (s *Server) authRouter(e *echo.Echo) {
 }
 
 // secure routes
-
 func (s *Server) todoRouter(e *echo.Echo) {
 	todoGroup := e.Group("/todo", s.secureRoutesMiddleware)
 

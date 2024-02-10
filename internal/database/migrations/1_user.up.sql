@@ -4,4 +4,4 @@ CREATE TABLE IF NOT EXISTS `user` (
   `email` varchar(255) UNIQUE NOT NULL,
   `email_verified` boolean DEFAULT false,
   `image` varchar(255)
-);
+); 
