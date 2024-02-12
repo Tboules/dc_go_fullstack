@@ -67,6 +67,7 @@ type Tag struct {
 
 type User struct {
 	ID            int64          `json:"id"`
+	ProviderID    string         `json:"provider_id"`
 	Name          string         `json:"name"`
 	Email         string         `json:"email"`
 	EmailVerified sql.NullBool   `json:"email_verified"`

@@ -11,14 +11,24 @@ import (
 )
 
 type UserClaims struct {
-	ProviderId string `json:"id"`
+	ProviderId string `json:"provider_id"`
+	UserID     int64  `json:"id"`
+	Email      string `json:"email"`
 	jwt.StandardClaims
+}
+
+func (a *Auth) NewAccessExpiry() time.Time {
+	return time.Now().Add(time.Minute * 15)
+}
+
+func (a *Auth) NewRefreshExpiry() time.Time {
+	return time.Now().Add(time.Hour * 48)
 }
 
 func (a *Auth) NewAccessToken(claims UserClaims) (string, error) {
 	claims.StandardClaims = jwt.StandardClaims{
 		IssuedAt:  time.Now().Unix(),
-		ExpiresAt: time.Now().Add(time.Minute * 15).Unix(),
+		ExpiresAt: a.NewAccessExpiry().Unix(),
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
@@ -29,7 +39,7 @@ func (a *Auth) NewAccessToken(claims UserClaims) (string, error) {
 func (a *Auth) NewRefreshToken() (string, error) {
 	claims := jwt.StandardClaims{
 		IssuedAt:  time.Now().Unix(),
-		ExpiresAt: time.Now().Add(time.Hour * 48).Unix(),
+		ExpiresAt: a.NewRefreshExpiry().Unix(),
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)

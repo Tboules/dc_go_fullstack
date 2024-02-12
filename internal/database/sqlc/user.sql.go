@@ -12,20 +12,26 @@ import (
 
 const createNewUser = `-- name: CreateNewUser :execresult
 INSERT INTO ` + "`" + `user` + "`" + ` (
-  name, email, image
+  name, email, image, provider_id
 ) VALUES (
-  ?, ?, ?
+  ?, ?, ?, ?
 )
 `
 
 type CreateNewUserParams struct {
-	Name  string         `json:"name"`
-	Email string         `json:"email"`
-	Image sql.NullString `json:"image"`
+	Name       string         `json:"name"`
+	Email      string         `json:"email"`
+	Image      sql.NullString `json:"image"`
+	ProviderID string         `json:"provider_id"`
 }
 
 func (q *Queries) CreateNewUser(ctx context.Context, arg CreateNewUserParams) (sql.Result, error) {
-	return q.db.ExecContext(ctx, createNewUser, arg.Name, arg.Email, arg.Image)
+	return q.db.ExecContext(ctx, createNewUser,
+		arg.Name,
+		arg.Email,
+		arg.Image,
+		arg.ProviderID,
+	)
 }
 
 const deleteUser = `-- name: DeleteUser :exec
@@ -39,7 +45,7 @@ func (q *Queries) DeleteUser(ctx context.Context, id int64) error {
 }
 
 const getUser = `-- name: GetUser :one
-SELECT id, name, email, email_verified, image FROM ` + "`" + `user` + "`" + `
+SELECT id, provider_id, name, email, email_verified, image FROM ` + "`" + `user` + "`" + `
 WHERE id = ? LIMIT 1
 `
 
@@ -48,6 +54,26 @@ func (q *Queries) GetUser(ctx context.Context, id int64) (User, error) {
 	var i User
 	err := row.Scan(
 		&i.ID,
+		&i.ProviderID,
+		&i.Name,
+		&i.Email,
+		&i.EmailVerified,
+		&i.Image,
+	)
+	return i, err
+}
+
+const getUserByProviderId = `-- name: GetUserByProviderId :one
+SELECT id, provider_id, name, email, email_verified, image FROM ` + "`" + `user` + "`" + `
+WHERE ` + "`" + `provider_id` + "`" + ` = ? LIMIT 1
+`
+
+func (q *Queries) GetUserByProviderId(ctx context.Context, providerID string) (User, error) {
+	row := q.db.QueryRowContext(ctx, getUserByProviderId, providerID)
+	var i User
+	err := row.Scan(
+		&i.ID,
+		&i.ProviderID,
 		&i.Name,
 		&i.Email,
 		&i.EmailVerified,
@@ -57,7 +83,7 @@ func (q *Queries) GetUser(ctx context.Context, id int64) (User, error) {
 }
 
 const getUsers = `-- name: GetUsers :many
-SELECT id, name, email, email_verified, image FROM ` + "`" + `user` + "`" + `
+SELECT id, provider_id, name, email, email_verified, image FROM ` + "`" + `user` + "`" + `
 ORDER BY ` + "`" + `name` + "`" + `
 `
 
@@ -72,6 +98,7 @@ func (q *Queries) GetUsers(ctx context.Context) ([]User, error) {
 		var i User
 		if err := rows.Scan(
 			&i.ID,
+			&i.ProviderID,
 			&i.Name,
 			&i.Email,
 			&i.EmailVerified,
@@ -95,6 +122,7 @@ UPDATE ` + "`" + `user` + "`" + `
   SET name = ?,
   email = ?,
   email_verified = ?,
+  provider_id = ?,
   image = ?
 WHERE id = ?
 `
@@ -103,6 +131,7 @@ type UpdateUserParams struct {
 	Name          string         `json:"name"`
 	Email         string         `json:"email"`
 	EmailVerified sql.NullBool   `json:"email_verified"`
+	ProviderID    string         `json:"provider_id"`
 	Image         sql.NullString `json:"image"`
 	ID            int64          `json:"id"`
 }
@@ -112,6 +141,7 @@ func (q *Queries) UpdateUser(ctx context.Context, arg UpdateUserParams) (sql.Res
 		arg.Name,
 		arg.Email,
 		arg.EmailVerified,
+		arg.ProviderID,
 		arg.Image,
 		arg.ID,
 	)
