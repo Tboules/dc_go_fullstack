@@ -22,6 +22,17 @@ func (s *Server) AuthProviderCallbackHandler(c echo.Context) error {
 		return err
 	}
 
+	//check if user exists by provider id (user.UserID)
+
+	//if user exists pass data into claims
+	//provider id
+	//user id
+	//email
+
+	//if user does not exist
+	//create user record
+	//pass the above data from result into claims
+
 	userClaims := auth.UserClaims{
 		ProviderId: user.UserID,
 	}
@@ -35,6 +46,8 @@ func (s *Server) AuthProviderCallbackHandler(c echo.Context) error {
 	if err != nil {
 		return err
 	}
+
+	//create session with refresh token
 
 	s.auth.AddTokenAsHttpOnlyCookie(accessToken, constants.AccessToken, c)
 	s.auth.AddTokenAsHttpOnlyCookie(refreshToken, constants.RefreshToken, c)

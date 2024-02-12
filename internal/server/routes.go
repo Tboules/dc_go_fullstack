@@ -88,6 +88,8 @@ func (s *Server) secureRoutesMiddleware(next echo.HandlerFunc) echo.HandlerFunc 
 				return echo.NewHTTPError(http.StatusUnauthorized, "error creating refresh token")
 			}
 
+			//add token in sessions table
+
 			s.auth.AddTokenAsHttpOnlyCookie(freshRefresheToken, constants.RefreshToken, c)
 		}
 
