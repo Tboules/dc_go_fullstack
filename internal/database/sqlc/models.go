@@ -50,6 +50,14 @@ type Icon struct {
 	LastUpdated  sql.NullTime   `json:"last_updated"`
 }
 
+type Session struct {
+	ID        int64        `json:"id"`
+	Token     string       `json:"token"`
+	UserID    int64        `json:"user_id"`
+	CreatedAt sql.NullTime `json:"created_at"`
+	ExpiresAt time.Time    `json:"expires_at"`
+}
+
 type Tag struct {
 	ID        int64     `json:"id"`
 	Name      string    `json:"name"`
