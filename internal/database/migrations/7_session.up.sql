@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS `session` (
+  `id` BIGINT AUTO_INCREMENT PRIMARY KEY,
+  `token` TEXT NOT NULL,
+  `user_id` BIGINT NOT NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `expires_at` TIMESTAMP NOT NULL,
+  CONSTRAINT fk_session_user FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+);

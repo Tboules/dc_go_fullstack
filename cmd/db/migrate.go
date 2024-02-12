@@ -13,6 +13,12 @@ import (
 )
 
 func main() {
+	if len(os.Args) != 2 {
+		log.Fatal("Please provide correct args for migration")
+	}
+
+	arg := os.Args[1]
+
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("Error loading .env file")
@@ -31,9 +37,19 @@ func main() {
 		driver,
 	)
 
-	err = m.Up()
-	if err != nil {
-		log.Fatalf("Problem with up migration: %v", err)
+	if arg == "up" {
+		log.Println(arg)
+		err = m.Up()
+		if err != nil {
+			log.Fatalf("Problem with up migration: %v", err)
+		}
+	} else if arg == "down" {
+		log.Println(arg)
+		err = m.Down()
+		if err != nil {
+			log.Fatalf("Problem with down migration: %v", err)
+		}
+	} else {
+		log.Fatal("Must provide up or down command")
 	}
-	log.Println("Migration completed sucessfully")
 }

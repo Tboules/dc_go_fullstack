@@ -22,21 +22,7 @@ func InitDatabase() *SQLStore {
 		log.Fatalf("Failed to connect: %v", err)
 	}
 
-	rows, err := db.Query("SHOW TABLES")
-	if err != nil {
-		log.Fatalf("Failed to query: %v", err)
-	}
-	defer rows.Close()
-
-	var tableName string
-	for rows.Next() {
-		if err := rows.Scan(&tableName); err != nil {
-			log.Fatalf("Failed to scan row: %v", err)
-		}
-
-		log.Println(tableName)
-	}
-
+	log.Println("Db Connection Opened ")
 	defer db.Close()
 
 	store := &SQLStore{

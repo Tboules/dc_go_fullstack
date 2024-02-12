@@ -1,10 +1,10 @@
 CREATE TABLE IF NOT EXISTS `excerpt` (
   `id` BIGINT AUTO_INCREMENT PRIMARY KEY,
-  `body` varchar(255) NOT NULL,
+  `body` TEXT NOT NULL,
   `type` int NOT NULL,
-  `reference_title` varchar(255),
+  `reference_title` varchar(1024),
   `reference_page` integer,
-  `reference_url` varchar(255),
+  `reference_url` varchar(2048),
   `desert_figure` BIGINT NOT NULL,
   `date_added` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `last_updated` timestamp,

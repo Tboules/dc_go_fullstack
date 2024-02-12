@@ -11,11 +11,17 @@ templates:
 build: 
 	@go build -o bin/api/main.go cmd/main.go 
 
+buildmigration:
+	@go build -o bin/db/migrate.go cmd/db/migrate.go
+
 watch:
 	@air
 
-migrate:
-	@go run cmd/db/migrate.go 
+migrate_up: buildmigration
+	@./bin/db/migrate.go up
 
-.PHONY: migrate run build watch templates_dev templates
+migrate_down: buildmigration
+	@./bin/db/migrate.go down
+
+.PHONY: migrate_up migrate_down buildmigration run build watch templates_dev templates
 

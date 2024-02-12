@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS `icon` (
   `id` BIGINT AUTO_INCREMENT PRIMARY KEY,
-  `url` varchar(255) NOT NULL,
+  `url` varchar(2048) NOT NULL,
   `description` varchar(255),
   `created_by` BIGINT NOT NULL,
   `desert_figure` BIGINT NOT NULL,
