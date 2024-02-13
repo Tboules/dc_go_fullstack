@@ -20,7 +20,8 @@ func main() {
 		google.New(os.Getenv("GOOGLE_CLIENT_ID"), os.Getenv("GOOGLE_SECRET"), "http://localhost:8080/auth/google/callback"),
 	)
 
-	server := server.NewServer()
+	server, services := server.NewServer()
+	defer services.DB.Conn.Close()
 
 	log.Fatal(server.ListenAndServe())
 }

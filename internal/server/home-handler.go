@@ -9,7 +9,7 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func (s *Server) HomeHandler(c echo.Context) error {
+func (s *Services) HomeHandler(c echo.Context) error {
 	claims, _ := c.Get(constants.UserClaimsKey).(*auth.UserClaims)
 	fmt.Printf("claims: %+v \n", claims)
 
@@ -18,7 +18,7 @@ func (s *Server) HomeHandler(c echo.Context) error {
 	return comp.Render(c.Request().Context(), c.Response().Writer)
 }
 
-func (s *Server) PostCount(c echo.Context) error {
+func (s *Services) PostCount(c echo.Context) error {
 	count := s.store.Increment()
 
 	comp := views.CountButton(count)

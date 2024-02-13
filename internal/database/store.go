@@ -22,8 +22,12 @@ func InitDatabase() *SQLStore {
 		log.Fatalf("Failed to connect: %v", err)
 	}
 
+	err = db.Ping()
+	if err != nil {
+		log.Fatalf("Problem pinging the db: %v", err)
+	}
+
 	log.Println("Db Connection Opened ")
-	defer db.Close()
 
 	store := &SQLStore{
 		Conn:    db,

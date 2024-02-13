@@ -11,30 +11,30 @@ import (
 	"github.com/Tboules/dc_go_fullstack/internal/database"
 )
 
-type Server struct {
+type Services struct {
 	port  int
 	store *database.Store
 	auth  *auth.Auth
-	db    *database.SQLStore
+	DB    *database.SQLStore
 }
 
-func NewServer() *http.Server {
+func NewServer() (*http.Server, *Services) {
 	port, _ := strconv.Atoi(os.Getenv("PORT"))
 
-	NewServer := &Server{
+	services := &Services{
 		port:  port,
 		store: database.New(),
 		auth:  auth.InitAuth(),
-		db:    database.InitDatabase(),
+		DB:    database.InitDatabase(),
 	}
 
-	server := &http.Server{
+	httpServer := &http.Server{
 		Addr:         fmt.Sprintf(":%d", port),
-		Handler:      NewServer.RegisterRoutes(),
+		Handler:      services.RegisterRoutes(),
 		IdleTimeout:  time.Minute,
 		ReadTimeout:  10 * time.Second,
 		WriteTimeout: 30 * time.Second,
 	}
 
-	return server
+	return httpServer, services
 }

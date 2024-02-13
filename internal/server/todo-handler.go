@@ -10,13 +10,13 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func (s *Server) TodoPageHandler(c echo.Context) error {
+func (s *Services) TodoPageHandler(c echo.Context) error {
 	page := views.TodoPage(s.store.GetTodos())
 
 	return page.Render(c.Request().Context(), c.Response().Writer)
 }
 
-func (s *Server) DeleteTodoHandler(c echo.Context) error {
+func (s *Services) DeleteTodoHandler(c echo.Context) error {
 	idParam := c.Param("id")
 	id, err := strconv.Atoi(idParam)
 
@@ -33,7 +33,7 @@ func (s *Server) DeleteTodoHandler(c echo.Context) error {
 	return c.NoContent(http.StatusOK)
 }
 
-func (s *Server) PostTodoHandler(c echo.Context) error {
+func (s *Services) PostTodoHandler(c echo.Context) error {
 	title := c.FormValue("title")
 	desc := c.FormValue("description")
 

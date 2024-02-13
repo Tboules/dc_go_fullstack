@@ -13,11 +13,11 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func (s *Server) LoginPageHandler(c echo.Context) error {
+func (s *Services) LoginPageHandler(c echo.Context) error {
 	return views.LoginPage().Render(c.Request().Context(), c.Response().Writer)
 }
 
-func (s *Server) AuthProviderCallbackHandler(c echo.Context) error {
+func (s *Services) AuthProviderCallbackHandler(c echo.Context) error {
 	user, err := s.auth.CompleteUserAuth(c)
 	if err != nil {
 		fmt.Println(err)
@@ -29,24 +29,22 @@ func (s *Server) AuthProviderCallbackHandler(c echo.Context) error {
 		ProviderId: user.UserID,
 	}
 
-	appUser, err := s.db.Queries.GetUserByProviderId(c.Request().Context(), user.UserID)
+	appUser, err := s.DB.Queries.GetUserByProviderId(c.Request().Context(), user.UserID)
 	if err != nil {
-		fmt.Println("creating new user")
-		fmt.Println(user.AvatarURL)
-		fmt.Println(user.Name)
-		fmt.Println(user.FirstName)
-		fmt.Println(user)
-
 		//name is null
 		//fix
 
-		res, err := s.db.Queries.CreateNewUser(c.Request().Context(), sqlc.CreateNewUserParams{
-			Email: user.Email,
-			Name:  user.FirstName + user.LastName,
-			Image: sql.NullString{String: user.AvatarURL, Valid: true},
+		name := user.FirstName + user.LastName
+		fmt.Printf("name is not empty: %t\n", name != "")
+
+		res, err := s.DB.Queries.CreateNewUser(c.Request().Context(), sqlc.CreateNewUserParams{
+			Email:      user.Email,
+			Name:       sql.NullString{String: name, Valid: name != ""},
+			Image:      sql.NullString{String: user.AvatarURL, Valid: true},
+			ProviderID: user.UserID,
 		})
 		if err != nil {
-			log.Println("Error adding user")
+			log.Printf("Error adding user %v\n", err)
 		}
 
 		userId, err := res.LastInsertId()
@@ -70,7 +68,7 @@ func (s *Server) AuthProviderCallbackHandler(c echo.Context) error {
 	}
 
 	//create session with refresh token
-	_, err = s.db.Queries.SaveSession(c.Request().Context(), sqlc.SaveSessionParams{
+	_, err = s.DB.Queries.SaveSession(c.Request().Context(), sqlc.SaveSessionParams{
 		Token:     refreshToken,
 		UserID:    userClaims.UserID,
 		ExpiresAt: s.auth.NewRefreshExpiry(),
@@ -85,7 +83,7 @@ func (s *Server) AuthProviderCallbackHandler(c echo.Context) error {
 	return c.Redirect(http.StatusTemporaryRedirect, "/")
 }
 
-func (s *Server) AuthHandler(c echo.Context) error {
+func (s *Services) AuthHandler(c echo.Context) error {
 	gothUser, err := s.auth.CompleteUserAuth(c)
 
 	if err == nil {
@@ -101,7 +99,7 @@ func (s *Server) AuthHandler(c echo.Context) error {
 	}
 }
 
-func (s *Server) LogoutHandler(c echo.Context) error {
+func (s *Services) LogoutHandler(c echo.Context) error {
 	err := s.auth.Logout(c)
 	if err != nil {
 		return err

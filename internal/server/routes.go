@@ -9,7 +9,7 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 )
 
-func (s *Server) RegisterRoutes() *echo.Echo {
+func (s *Services) RegisterRoutes() *echo.Echo {
 	e := echo.New()
 	e.HTTPErrorHandler = customErrorHandler
 
@@ -30,12 +30,12 @@ func (s *Server) RegisterRoutes() *echo.Echo {
 
 // open routes
 
-func (s *Server) homeRouter(e *echo.Echo) {
+func (s *Services) homeRouter(e *echo.Echo) {
 	e.GET("/", s.HomeHandler, s.unrestrictedSetUserClaims)
 	e.POST("/", s.PostCount)
 }
 
-func (s *Server) authRouter(e *echo.Echo) {
+func (s *Services) authRouter(e *echo.Echo) {
 	e.GET("/login", s.LoginPageHandler)
 	e.GET("/auth/:provider/callback", s.AuthProviderCallbackHandler)
 	e.GET("/auth/:provider", s.AuthHandler)
@@ -44,7 +44,7 @@ func (s *Server) authRouter(e *echo.Echo) {
 }
 
 // secure routes
-func (s *Server) todoRouter(e *echo.Echo) {
+func (s *Services) todoRouter(e *echo.Echo) {
 	todoGroup := e.Group("/todo", s.secureRoutesMiddleware)
 
 	todoGroup.GET("", s.TodoPageHandler)
@@ -54,7 +54,7 @@ func (s *Server) todoRouter(e *echo.Echo) {
 }
 
 // middleware
-func (s *Server) secureRoutesMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
+func (s *Services) secureRoutesMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
 
 		// get tokens from cookies
@@ -110,11 +110,17 @@ func (s *Server) secureRoutesMiddleware(next echo.HandlerFunc) echo.HandlerFunc 
 	}
 }
 
-func (s *Server) unrestrictedSetUserClaims(next echo.HandlerFunc) echo.HandlerFunc {
+func (s *Services) unrestrictedSetUserClaims(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		accessToken, _ := c.Cookie(constants.AccessToken)
+		accessToken, err := c.Cookie(constants.AccessToken)
+		if err != nil {
+			return next(c)
+		}
 
-		claimsFromToken, _ := s.auth.ParseAccessToken(accessToken.Value)
+		claimsFromToken, err := s.auth.ParseAccessToken(accessToken.Value)
+		if err != nil {
+			return next(c)
+		}
 
 		claims := claimsFromToken
 
