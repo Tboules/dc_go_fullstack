@@ -21,7 +21,6 @@ INSERT INTO `user` (
 UPDATE `user`
   SET name = ?,
   email = ?,
-  email_verified = ?,
   provider_id = ?,
   image = ?
 WHERE id = ?;

@@ -19,7 +19,7 @@ INSERT INTO ` + "`" + `user` + "`" + ` (
 `
 
 type CreateNewUserParams struct {
-	Name       string         `json:"name"`
+	Name       sql.NullString `json:"name"`
 	Email      string         `json:"email"`
 	Image      sql.NullString `json:"image"`
 	ProviderID string         `json:"provider_id"`
@@ -45,7 +45,7 @@ func (q *Queries) DeleteUser(ctx context.Context, id int64) error {
 }
 
 const getUser = `-- name: GetUser :one
-SELECT id, provider_id, name, email, email_verified, image FROM ` + "`" + `user` + "`" + `
+SELECT id, provider_id, name, email, image FROM ` + "`" + `user` + "`" + `
 WHERE id = ? LIMIT 1
 `
 
@@ -57,14 +57,13 @@ func (q *Queries) GetUser(ctx context.Context, id int64) (User, error) {
 		&i.ProviderID,
 		&i.Name,
 		&i.Email,
-		&i.EmailVerified,
 		&i.Image,
 	)
 	return i, err
 }
 
 const getUserByProviderId = `-- name: GetUserByProviderId :one
-SELECT id, provider_id, name, email, email_verified, image FROM ` + "`" + `user` + "`" + `
+SELECT id, provider_id, name, email, image FROM ` + "`" + `user` + "`" + `
 WHERE ` + "`" + `provider_id` + "`" + ` = ? LIMIT 1
 `
 
@@ -76,14 +75,13 @@ func (q *Queries) GetUserByProviderId(ctx context.Context, providerID string) (U
 		&i.ProviderID,
 		&i.Name,
 		&i.Email,
-		&i.EmailVerified,
 		&i.Image,
 	)
 	return i, err
 }
 
 const getUsers = `-- name: GetUsers :many
-SELECT id, provider_id, name, email, email_verified, image FROM ` + "`" + `user` + "`" + `
+SELECT id, provider_id, name, email, image FROM ` + "`" + `user` + "`" + `
 ORDER BY ` + "`" + `name` + "`" + `
 `
 
@@ -101,7 +99,6 @@ func (q *Queries) GetUsers(ctx context.Context) ([]User, error) {
 			&i.ProviderID,
 			&i.Name,
 			&i.Email,
-			&i.EmailVerified,
 			&i.Image,
 		); err != nil {
 			return nil, err
@@ -121,26 +118,23 @@ const updateUser = `-- name: UpdateUser :execresult
 UPDATE ` + "`" + `user` + "`" + `
   SET name = ?,
   email = ?,
-  email_verified = ?,
   provider_id = ?,
   image = ?
 WHERE id = ?
 `
 
 type UpdateUserParams struct {
-	Name          string         `json:"name"`
-	Email         string         `json:"email"`
-	EmailVerified sql.NullBool   `json:"email_verified"`
-	ProviderID    string         `json:"provider_id"`
-	Image         sql.NullString `json:"image"`
-	ID            int64          `json:"id"`
+	Name       sql.NullString `json:"name"`
+	Email      string         `json:"email"`
+	ProviderID string         `json:"provider_id"`
+	Image      sql.NullString `json:"image"`
+	ID         int64          `json:"id"`
 }
 
 func (q *Queries) UpdateUser(ctx context.Context, arg UpdateUserParams) (sql.Result, error) {
 	return q.db.ExecContext(ctx, updateUser,
 		arg.Name,
 		arg.Email,
-		arg.EmailVerified,
 		arg.ProviderID,
 		arg.Image,
 		arg.ID,
