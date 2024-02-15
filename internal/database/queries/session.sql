@@ -12,3 +12,7 @@ INSERT INTO `session` (
 -- name: DeleteSession :exec
 DELETE FROM `session`
 WHERE token = ?;
+
+-- name: DeleteUserSession :exec
+DELETE FROM `session`
+WHERE user_id = ?;

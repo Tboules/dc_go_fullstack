@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/Tboules/dc_go_fullstack/internal/constants"
+	"github.com/Tboules/dc_go_fullstack/internal/database/sqlc"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
@@ -78,18 +79,35 @@ func (s *Services) secureRoutesMiddleware(next echo.HandlerFunc) echo.HandlerFun
 		}
 
 		// refresh refresh token if expired
+		// TODO -- rewrite new session function
 		if refreshClaims.Valid() != nil {
-			// check that old token exists in sessions table
-			// if not redirect user to sign in again
-			//delete old token from db token and/or sessions table
+			// check that old token exists
+			_, err := s.DB.Queries.GetSession(c.Request().Context(), refreshToken.Value)
+			if err != nil {
+				return echo.NewHTTPError(http.StatusUnauthorized, "Token not found")
+			}
+
+			// delete old token from db token and/or sessions table
+			err = s.DB.Queries.DeleteSession(c.Request().Context(), refreshToken.Value)
+			if err != nil {
+				return echo.NewHTTPError(http.StatusUnauthorized, "Token not deleted")
+			}
 
 			freshRefresheToken, err := s.auth.NewRefreshToken()
 			if err != nil {
 				return echo.NewHTTPError(http.StatusUnauthorized, "error creating refresh token")
 			}
 
-			//add token in sessions table
+			_, err = s.DB.Queries.SaveSession(c.Request().Context(), sqlc.SaveSessionParams{
+				Token:     freshRefresheToken,
+				UserID:    userClaims.UserID,
+				ExpiresAt: s.auth.NewRefreshExpiry(),
+			})
+			if err != nil {
+				return echo.NewHTTPError(http.StatusUnauthorized, "error creating session")
+			}
 
+			// add token in sessions table
 			s.auth.AddTokenAsHttpOnlyCookie(freshRefresheToken, constants.RefreshToken, c)
 		}
 

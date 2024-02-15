@@ -31,11 +31,7 @@ func (s *Services) AuthProviderCallbackHandler(c echo.Context) error {
 
 	appUser, err := s.DB.Queries.GetUserByProviderId(c.Request().Context(), user.UserID)
 	if err != nil {
-		//name is null
-		//fix
-
 		name := user.FirstName + user.LastName
-		fmt.Printf("name is not empty: %t\n", name != "")
 
 		res, err := s.DB.Queries.CreateNewUser(c.Request().Context(), sqlc.CreateNewUserParams{
 			Email:      user.Email,

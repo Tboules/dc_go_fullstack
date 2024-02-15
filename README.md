@@ -33,7 +33,7 @@ The issue has been that every time I start this project, I only get part way and
   - [x] create jwt token and set http only cookie
   - [x] create middleware for error handling, protected route, isAuth
   - [x] create refresh
-  - [ ] session logic in db
+  - [x] session logic in db
   - [ ] logout (clear cookies, clear db session)
 - [x] configure db
 - [x] Initialize db schema and migrations
