@@ -2,12 +2,11 @@ package auth
 
 import (
 	"fmt"
-	"net/http"
 	"os"
 	"time"
 
+	"github.com/Tboules/dc_go_fullstack/internal/utils"
 	"github.com/golang-jwt/jwt"
-	"github.com/labstack/echo/v4"
 )
 
 type UserClaims struct {
@@ -17,18 +16,10 @@ type UserClaims struct {
 	jwt.StandardClaims
 }
 
-func (a *Auth) NewAccessExpiry() time.Time {
-	return time.Now().Add(time.Minute * 15)
-}
-
-func (a *Auth) NewRefreshExpiry() time.Time {
-	return time.Now().Add(time.Hour * 48)
-}
-
 func (a *Auth) NewAccessToken(claims UserClaims) (string, error) {
 	claims.StandardClaims = jwt.StandardClaims{
 		IssuedAt:  time.Now().Unix(),
-		ExpiresAt: a.NewAccessExpiry().Unix(),
+		ExpiresAt: utils.NewAccessExpiry().Unix(),
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
@@ -39,7 +30,7 @@ func (a *Auth) NewAccessToken(claims UserClaims) (string, error) {
 func (a *Auth) NewRefreshToken() (string, error) {
 	claims := jwt.StandardClaims{
 		IssuedAt:  time.Now().Unix(),
-		ExpiresAt: a.NewRefreshExpiry().Unix(),
+		ExpiresAt: utils.NewRefreshExpiry().Unix(),
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
@@ -75,15 +66,4 @@ func (a *Auth) ParseRefreshToken(token string) (*jwt.StandardClaims, error) {
 	}
 
 	return parsedRefreshToken.Claims.(*jwt.StandardClaims), nil
-}
-
-func (a *Auth) AddTokenAsHttpOnlyCookie(token string, key string, c echo.Context) {
-	accessCookie := new(http.Cookie)
-	accessCookie.Name = key
-	accessCookie.Value = token
-	accessCookie.HttpOnly = true
-	accessCookie.Secure = false
-	accessCookie.Path = "/"
-
-	c.SetCookie(accessCookie)
 }

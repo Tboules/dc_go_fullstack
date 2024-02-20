@@ -9,6 +9,7 @@ import (
 	"github.com/Tboules/dc_go_fullstack/internal/auth"
 	"github.com/Tboules/dc_go_fullstack/internal/constants"
 	"github.com/Tboules/dc_go_fullstack/internal/database/sqlc"
+	"github.com/Tboules/dc_go_fullstack/internal/utils"
 	"github.com/Tboules/dc_go_fullstack/internal/views"
 	"github.com/labstack/echo/v4"
 )
@@ -67,14 +68,14 @@ func (s *Services) AuthProviderCallbackHandler(c echo.Context) error {
 	_, err = s.DB.Queries.SaveSession(c.Request().Context(), sqlc.SaveSessionParams{
 		Token:     refreshToken,
 		UserID:    userClaims.UserID,
-		ExpiresAt: s.auth.NewRefreshExpiry(),
+		ExpiresAt: utils.NewRefreshExpiry(),
 	})
 	if err != nil {
 		log.Printf("Error creating session: %v", err)
 	}
 
-	s.auth.AddTokenAsHttpOnlyCookie(accessToken, constants.AccessToken, c)
-	s.auth.AddTokenAsHttpOnlyCookie(refreshToken, constants.RefreshToken, c)
+	utils.AddHttpOnlyCookie(constants.AccessToken, accessToken, c)
+	utils.AddHttpOnlyCookie(constants.RefreshToken, refreshToken, c)
 
 	return c.Redirect(http.StatusTemporaryRedirect, "/")
 }
