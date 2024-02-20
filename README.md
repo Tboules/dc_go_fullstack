@@ -34,9 +34,9 @@ The issue has been that every time I start this project, I only get part way and
   - [x] create middleware for error handling, protected route, isAuth
   - [x] create refresh
   - [x] session logic in db
-  - [ ] logout (clear cookies, clear db session)
+  - [x] logout (clear cookies, clear db session)
 - [x] configure db
 - [x] Initialize db schema and migrations
 - [ ] SQLC and db package
-- [ ] create auth page and persist user data
+- [x] create auth page and persist user data
 - [ ] create front end forms for CRUD quotes and authors
