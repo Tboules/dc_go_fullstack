@@ -111,7 +111,7 @@ func customErrorHandler(err error, c echo.Context) {
 
 	switch code {
 	case http.StatusUnauthorized:
-		err := c.Redirect(http.StatusTemporaryRedirect, "/login")
+		err := c.Redirect(http.StatusTemporaryRedirect, "/auth/login")
 		if err != nil {
 			fmt.Println("Problem with redirect in global error handler")
 		}

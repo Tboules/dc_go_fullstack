@@ -13,7 +13,7 @@ func (s *Services) HomeHandler(c echo.Context) error {
 	claims, _ := c.Get(constants.UserClaimsKey).(*auth.UserClaims)
 	fmt.Printf("claims: %+v \n", claims)
 
-	comp := views.HomePage(s.store.CurrentCount())
+	comp := views.HomePage(s.store.CurrentCount(), claims)
 
 	return comp.Render(c.Request().Context(), c.Response().Writer)
 }

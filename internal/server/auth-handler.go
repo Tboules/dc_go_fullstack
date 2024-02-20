@@ -97,7 +97,21 @@ func (s *Services) AuthHandler(c echo.Context) error {
 }
 
 func (s *Services) LogoutHandler(c echo.Context) error {
-	err := s.auth.Logout(c)
+	refreshToken, err := c.Cookie(constants.RefreshToken)
+	if err != nil {
+		return err
+	}
+
+	err = s.DB.Queries.DeleteSession(c.Request().Context(), refreshToken.Value)
+	fmt.Println(refreshToken)
+	if err != nil {
+		fmt.Println(err)
+		return err
+	}
+
+	utils.ClearAuthCookies(c)
+
+	err = s.auth.Logout(c)
 	if err != nil {
 		return err
 	}

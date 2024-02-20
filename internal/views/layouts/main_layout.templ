@@ -1,6 +1,8 @@
 package layouts
 
-templ MainLayout() {
+import "github.com/Tboules/dc_go_fullstack/internal/auth"
+
+templ MainLayout(claims *auth.UserClaims) {
 	<!DOCTYPE html>
 	<html lang="en">
 		<head>
@@ -11,20 +13,22 @@ templ MainLayout() {
 			<script src="/static/js/htmx.min.js"></script>
 		</head>
 		<body>
-			@TopNav()
+			<nav class="bg-slate-100 w-full">
+				<div class="flex max-w-screen-xl p-4 m-auto justify-between items-center">
+					<a href="/">Desert Collections</a>
+					<div>
+						<a href="/todo">Todo List</a>
+					</div>
+					<div>
+						if claims != nil {
+							<a href="/auth/logout">Logout</a>
+						} else {
+							<a href="/auth/login">Login</a>
+						}
+					</div>
+				</div>
+			</nav>
 			{ children... }
 		</body>
 	</html>
-}
-
-templ TopNav() {
-	<nav class="bg-slate-100 w-full">
-		<div class="flex max-w-screen-xl p-4 m-auto justify-between items-center">
-			<a href="/">Desert Collections</a>
-			<div>
-				<a href="/todo">Todo List</a>
-			</div>
-			<a href="/login">Login</a>
-		</div>
-	</nav>
 }

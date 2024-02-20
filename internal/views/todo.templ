@@ -3,9 +3,10 @@ package views
 import "github.com/Tboules/dc_go_fullstack/internal/views/layouts"
 import "github.com/Tboules/dc_go_fullstack/internal/database"
 import "strconv"
+import "github.com/Tboules/dc_go_fullstack/internal/auth"
 
-templ TodoPage(todos []database.Todo) {
-	@layouts.MainLayout() {
+templ TodoPage(todos []database.Todo, claims *auth.UserClaims) {
+	@layouts.MainLayout(claims) {
 		<main class="p-4 max-w-screen-lg m-auto">
 			<form
 				hx-post="/todo"

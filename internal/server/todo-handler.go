@@ -5,13 +5,16 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/Tboules/dc_go_fullstack/internal/auth"
+	"github.com/Tboules/dc_go_fullstack/internal/constants"
 	"github.com/Tboules/dc_go_fullstack/internal/database"
 	"github.com/Tboules/dc_go_fullstack/internal/views"
 	"github.com/labstack/echo/v4"
 )
 
 func (s *Services) TodoPageHandler(c echo.Context) error {
-	page := views.TodoPage(s.store.GetTodos())
+	claims, _ := c.Get(constants.UserClaimsKey).(*auth.UserClaims)
+	page := views.TodoPage(s.store.GetTodos(), claims)
 
 	return page.Render(c.Request().Context(), c.Response().Writer)
 }

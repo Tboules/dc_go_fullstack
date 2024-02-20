@@ -2,9 +2,10 @@ package views
 
 import "github.com/Tboules/dc_go_fullstack/internal/views/layouts"
 import "strconv"
+import "github.com/Tboules/dc_go_fullstack/internal/auth"
 
-templ HomePage(count int) {
-	@layouts.MainLayout() {
+templ HomePage(count int, claims *auth.UserClaims) {
+	@layouts.MainLayout(claims) {
 		<div class="bg-blue-200">
 			<h1>Page Load testing </h1>
 			@CountButton(count)
