@@ -25,7 +25,6 @@ func (s *Services) RegisterRoutes() *echo.Echo {
 }
 
 // open routes
-
 func (s *Services) homeRouter(e *echo.Echo) {
 	e.GET("/", s.HomeHandler, s.unrestrictedSetUserClaims)
 	e.POST("/", s.PostCount)

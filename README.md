@@ -37,6 +37,6 @@ The issue has been that every time I start this project, I only get part way and
   - [x] logout (clear cookies, clear db session)
 - [x] configure db
 - [x] Initialize db schema and migrations
-- [ ] SQLC and db package
+- [x] SQLC and db package
 - [x] create auth page and persist user data
 - [ ] create front end forms for CRUD quotes and authors
