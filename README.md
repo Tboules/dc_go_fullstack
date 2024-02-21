@@ -40,3 +40,21 @@ The issue has been that every time I start this project, I only get part way and
 - [x] SQLC and db package
 - [x] create auth page and persist user data
 - [ ] create front end forms for CRUD quotes and authors
+
+<br />
+
+---
+
+## Thoughts on taking a break
+
+This project has been powerful in teaching me the architecture behind Golang apis and I had a lot of fun playing with
+Templ / HTMX for a pretty awesome stack. I can see the merit to it, but since I am a solo dev working on my side project,
+I am difinitely going to need a lot of quality of life improvements.
+
+Major issues
+
+- Speed of development
+- Tailwind Compiler
+- Templ files and Templ tooling needing work
+
+Overall this project allowed me to embrace a more backend focused stack and learn along the way which in my book made it worthwhile.
